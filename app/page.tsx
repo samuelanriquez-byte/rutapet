@@ -23,8 +23,8 @@ export default function LandingPage() {
           ✨ Para forrajerías y pet shops de Argentina
         </div>
         <h1 style={{ fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 900, lineHeight: 1.1, letterSpacing: -2, marginBottom: 24 }}>
-          Tus clientes nunca<br />
-          <span style={{ color: '#EA6C00' }}>se quedan sin alimento</span>
+          Tus clientes siempre con alimento.<br />
+          <span style={{ color: '#EA6C00' }}>Vos siempre con ventas.</span>
         </h1>
         <p style={{ fontSize: 18, color: '#555', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 48px' }}>
           RutaPet avisa automáticamente por WhatsApp cuando a cada mascota le está por terminar el alimento. Tus clientes confirman el pedido y vos arrancás el día con la hoja de ruta lista.
