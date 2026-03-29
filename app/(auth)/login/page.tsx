@@ -32,17 +32,19 @@ export default function LoginPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email" onKeyDown={e => e.key === 'Enter' && login()}
             style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
-          <div style={{ position: 'relative' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: -6 }}>
-            <span style={{ fontSize: 12, color: '#888' }}>Contraseña</span>
-            <Link href="/forgot-password" style={{ fontSize: 12, color: '#EA6C00', textDecoration: 'none' }}>¿Olvidaste tu contraseña?</Link>
-          </div>
-          <input value={password} onChange={e => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} placeholder="Contraseña" onKeyDown={e => e.key === 'Enter' && login()}
-              style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 44px 12px 16px', color: '#111', fontSize: 14, outline: 'none', width: '100%', boxSizing: 'border-box' }} />
-            <button type="button" onClick={() => setShowPass(p => !p)}
-              style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: '#888' }}>
-              {showPass ? '🙈' : '👁️'}
-            </button>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+              <span style={{ fontSize: 12, color: '#888' }}>Contraseña</span>
+              <Link href="/forgot-password" style={{ fontSize: 12, color: '#EA6C00', textDecoration: 'none' }}>¿Olvidaste tu contraseña?</Link>
+            </div>
+            <div style={{ position: 'relative' }}>
+              <input value={password} onChange={e => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} placeholder="Contraseña" onKeyDown={e => e.key === 'Enter' && login()}
+                style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 44px 12px 16px', color: '#111', fontSize: 14, outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+              <button type="button" onClick={() => setShowPass(p => !p)}
+                style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: '#888' }}>
+                {showPass ? '🙈' : '👁️'}
+              </button>
+            </div>
           </div>
           {error && <p style={{ color: '#E53E3E', fontSize: 13 }}>{error}</p>}
           <button onClick={login} disabled={loading}
