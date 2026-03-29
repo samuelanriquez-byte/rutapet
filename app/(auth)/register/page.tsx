@@ -39,9 +39,8 @@ export default function RegisterPage() {
       })
     }
 
-    // Mostrar pantalla de confirmación de email
-    setEmailSent(true)
     setLoading(false)
+    window.location.href = '/dashboard'
   }
 
   if (emailSent) return (
