@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS negocios (
   metodos_pago TEXT[] DEFAULT ARRAY['efectivo'],
   dias_anticipacion INTEGER DEFAULT 1,
   plan TEXT DEFAULT 'trial',
-  trial_ends_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '14 days'),
+  trial_ends_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '45 days'),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

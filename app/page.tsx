@@ -30,7 +30,7 @@ export default function LandingPage() {
           RutaPet avisa automáticamente por WhatsApp cuando a cada mascota le está por terminar el alimento. Tus clientes confirman el pedido y vos arrancás el día con la hoja de ruta lista.
         </p>
         <Link href="/register" style={{ display: 'inline-block', background: '#EA6C00', color: '#fff', textDecoration: 'none', fontSize: 16, fontWeight: 700, padding: '16px 40px', borderRadius: 12 }}>
-          Probá 14 días gratis →
+          Probá 45 días gratis →
         </Link>
         <p style={{ color: '#AAA', fontSize: 13, marginTop: 16 }}>Sin tarjeta de crédito. Sin compromiso.</p>
       </section>
@@ -66,7 +66,7 @@ export default function LandingPage() {
           <div style={{ fontSize: 56, fontWeight: 900, color: '#EA6C00', letterSpacing: -2 }}>$35</div>
           <div style={{ color: '#888', marginBottom: 32, fontSize: 14 }}>USD / mes · Clientes ilimitados · WhatsApp incluido</div>
           <ul style={{ textAlign: 'left', listStyle: 'none', marginBottom: 36 }}>
-            {['Clientes y mascotas ilimitados', 'WhatsApp automático incluido', 'Pedidos organizados por día', 'Filtro por localidad', '14 días de prueba gratis'].map(f => (
+            {['Clientes y mascotas ilimitados', 'WhatsApp automático incluido', 'Pedidos organizados por día', 'Filtro por localidad', '45 días de prueba gratis'].map(f => (
               <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, fontSize: 14, color: '#333' }}>
                 <span style={{ color: '#EA6C00', fontWeight: 700 }}>✓</span> {f}
               </li>

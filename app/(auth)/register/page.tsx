@@ -31,7 +31,7 @@ export default function RegisterPage() {
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>🐾</div>
           <h1 style={{ color: '#111', fontSize: 22, fontWeight: 800 }}>Empezá gratis</h1>
-          <p style={{ color: '#888', fontSize: 14, marginTop: 4 }}>14 días de prueba sin tarjeta</p>
+          <p style={{ color: '#888', fontSize: 14, marginTop: 4 }}>45 días de prueba sin tarjeta</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input value={form.nombre} onChange={e => setForm(p => ({ ...p, nombre: e.target.value }))} placeholder="Nombre de tu forrajería o negocio"
