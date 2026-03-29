@@ -25,7 +25,7 @@ export default function LoginPage() {
       <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: 40, width: '100%', maxWidth: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>🐾</div>
-          <h1 style={{ color: '#FFF7ED', fontSize: 22, fontWeight: 800 }}>CicloPet</h1>
+          <h1 style={{ color: '#FFF7ED', fontSize: 22, fontWeight: 800 }}>RutaPet</h1>
           <p style={{ color: '#7A4A1E', fontSize: 14, marginTop: 4 }}>Iniciá sesión en tu cuenta</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

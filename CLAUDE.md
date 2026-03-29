@@ -1,6 +1,6 @@
-# CicloPet
+# RutaPet
 
-SaaS de retención automática de clientes para forrajerías y pet shops. Mercado Argentina. Dominio: ciclopet.com.ar
+SaaS de retención automática de clientes para forrajerías y pet shops. Mercado Argentina. Dominio: rutapet.com.ar
 
 ## Qué es
 Plataforma que avisa automáticamente por WhatsApp a los clientes de una forrajería cuando se les está por terminar el alimento. El cliente confirma su pedido con un click y el forrajero arranca el día con todos los repartos organizados.
@@ -43,7 +43,7 @@ SUPABASE_SERVICE_ROLE_KEY=
 TWILIO_ACCOUNT_SID=
 TWILIO_AUTH_TOKEN=
 TWILIO_WHATSAPP_NUMBER=
-NEXT_PUBLIC_BASE_URL=https://ciclopet.com.ar
+NEXT_PUBLIC_BASE_URL=https://rutapet.com.ar
 CRON_SECRET=
 ```
 

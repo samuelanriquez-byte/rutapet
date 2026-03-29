@@ -1,4 +1,4 @@
--- CicloPet - Schema de base de datos
+-- RutaPet - Schema de base de datos
 -- Ejecutar en Supabase SQL Editor
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

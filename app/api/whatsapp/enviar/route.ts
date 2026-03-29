@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
 import { sendWhatsApp } from '@/lib/twilio'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://ciclopet.com.ar'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://rutapet.com.ar'
 
 export async function POST(req: NextRequest) {
   try {

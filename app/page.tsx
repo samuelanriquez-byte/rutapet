@@ -6,7 +6,7 @@ export default function LandingPage() {
 
       {/* Navbar */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 40px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <span style={{ fontSize: 22, fontWeight: 800, color: '#F97316', letterSpacing: -0.5 }}>🐾 CicloPet</span>
+        <span style={{ fontSize: 22, fontWeight: 800, color: '#F97316', letterSpacing: -0.5 }}>🐾 RutaPet</span>
         <div style={{ display: 'flex', gap: 12 }}>
           <Link href="/login" style={{ color: '#FDDCB5', textDecoration: 'none', fontSize: 14, padding: '8px 16px' }}>
             Iniciar sesión
@@ -27,7 +27,7 @@ export default function LandingPage() {
           <span style={{ color: '#F97316' }}>se quedan sin alimento</span>
         </h1>
         <p style={{ fontSize: 18, color: '#FDDCB5', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 48px' }}>
-          CicloPet avisa automáticamente por WhatsApp cuando a cada mascota le está por terminar el alimento. Tus clientes confirman el pedido y vos arrancás el día con la hoja de ruta lista.
+          RutaPet avisa automáticamente por WhatsApp cuando a cada mascota le está por terminar el alimento. Tus clientes confirman el pedido y vos arrancás el día con la hoja de ruta lista.
         </p>
         <Link href="/register" style={{ display: 'inline-block', background: '#EA6C00', color: '#fff', textDecoration: 'none', fontSize: 16, fontWeight: 700, padding: '16px 40px', borderRadius: 12 }}>
           Probá 14 días gratis →
@@ -41,7 +41,7 @@ export default function LandingPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 24 }}>
           {[
             { n: '01', icon: '📋', title: 'Cargás tus clientes', desc: 'Nombre, teléfono, mascota, marca de alimento y cuántos kilos compra cada uno.' },
-            { n: '02', icon: '🤖', title: 'CicloPet detecta quién necesita', desc: 'Cada día el sistema calcula a quién le está por terminar el alimento según su ciclo.' },
+            { n: '02', icon: '🤖', title: 'RutaPet detecta quién necesita', desc: 'Cada día el sistema calcula a quién le está por terminar el alimento según su ciclo.' },
             { n: '03', icon: '📲', title: 'Elegís a quién mandar', desc: 'Ves la lista, filtrás por localidad y decidís a quién enviar el recordatorio.' },
             { n: '04', icon: '✅', title: 'El cliente confirma', desc: 'Recibe un WhatsApp con link. En 2 clicks confirma su pedido y elige cómo pagar.' },
             { n: '05', icon: '🚚', title: 'Repartís con todo organizado', desc: 'A primera hora tenés todos los pedidos del día listos para salir.' },
@@ -78,7 +78,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '32px 40px', textAlign: 'center', color: '#7A4A1E', fontSize: 13 }}>
-        © 2026 CicloPet · Hecho en Argentina 🇦🇷
+        © 2026 RutaPet · Hecho en Argentina 🇦🇷
       </footer>
     </main>
   )
