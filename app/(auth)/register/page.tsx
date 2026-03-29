@@ -26,29 +26,29 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#1C0F00', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: 40, width: '100%', maxWidth: 400 }}>
+    <div style={{ minHeight: '100vh', background: '#FFF7ED', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+      <div style={{ background: '#fff', border: '1px solid #F0EDE8', borderRadius: 20, padding: 40, width: '100%', maxWidth: 400, boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <div style={{ fontSize: 32, marginBottom: 8 }}>🐾</div>
-          <h1 style={{ color: '#FFF7ED', fontSize: 22, fontWeight: 800 }}>Empezá gratis</h1>
-          <p style={{ color: '#7A4A1E', fontSize: 14, marginTop: 4 }}>14 días de prueba sin tarjeta</p>
+          <h1 style={{ color: '#111', fontSize: 22, fontWeight: 800 }}>Empezá gratis</h1>
+          <p style={{ color: '#888', fontSize: 14, marginTop: 4 }}>14 días de prueba sin tarjeta</p>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <input value={form.nombre} onChange={e => setForm(p => ({ ...p, nombre: e.target.value }))} placeholder="Nombre de tu forrajería o negocio"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '12px 16px', color: '#FFF7ED', fontSize: 14, outline: 'none' }} />
+            style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
           <input value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} type="email" placeholder="Email"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '12px 16px', color: '#FFF7ED', fontSize: 14, outline: 'none' }} />
+            style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
           <input value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} type="password" placeholder="Contraseña"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '12px 16px', color: '#FFF7ED', fontSize: 14, outline: 'none' }} />
-          {error && <p style={{ color: '#F87171', fontSize: 13 }}>{error}</p>}
+            style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
+          {error && <p style={{ color: '#E53E3E', fontSize: 13 }}>{error}</p>}
           <button onClick={register} disabled={loading}
             style={{ background: '#EA6C00', color: '#fff', border: 'none', borderRadius: 10, padding: '13px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
             {loading ? 'Creando cuenta...' : 'Crear cuenta gratis'}
           </button>
         </div>
-        <p style={{ color: '#7A4A1E', fontSize: 13, textAlign: 'center', marginTop: 24 }}>
+        <p style={{ color: '#888', fontSize: 13, textAlign: 'center', marginTop: 24 }}>
           ¿Ya tenés cuenta?{' '}
-          <Link href="/login" style={{ color: '#F97316', textDecoration: 'none', fontWeight: 600 }}>Iniciá sesión</Link>
+          <Link href="/login" style={{ color: '#EA6C00', textDecoration: 'none', fontWeight: 600 }}>Iniciá sesión</Link>
         </p>
       </div>
     </div>
