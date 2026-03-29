@@ -6,7 +6,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       {/* Sidebar */}
       <aside style={{ width: 220, background: '#fff', borderRight: '1px solid #E8E8E4', display: 'flex', flexDirection: 'column', padding: '24px 0' }}>
         <div style={{ padding: '0 20px 24px', borderBottom: '1px solid #E8E8E4', marginBottom: 16 }}>
-          <span style={{ fontSize: 18, fontWeight: 800, color: '#16A34A' }}>🐾 CicloPet</span>
+          <span style={{ fontSize: 18, fontWeight: 800, color: '#EA6C00' }}>🐾 CicloPet</span>
         </div>
         {[
           { href: '/dashboard', icon: '🏠', label: 'Dashboard' },

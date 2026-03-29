@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/client'
 
 const ESTADO_COLOR: Record<string, { bg: string; color: string; label: string }> = {
   pendiente: { bg: '#FEF9C3', color: '#854D0E', label: 'Pendiente' },
-  confirmado: { bg: '#DCFCE7', color: '#166534', label: 'Confirmado' },
+  confirmado: { bg: '#FEF3C7', color: '#92400E', label: 'Confirmado' },
   entregado: { bg: '#F3F4F6', color: '#374151', label: 'Entregado' },
   cancelado: { bg: '#FEE2E2', color: '#991B1B', label: 'Cancelado' },
 }
@@ -43,7 +43,7 @@ export default function PedidosPanel({ negocio }: any) {
           <h2 style={{ fontSize: 16, fontWeight: 700, color: '#111' }}>
             🚚 Pedidos del día
             {confirmados > 0 && (
-              <span style={{ marginLeft: 8, background: '#DCFCE7', color: '#166534', fontSize: 12, fontWeight: 700, padding: '2px 8px', borderRadius: 99 }}>
+              <span style={{ marginLeft: 8, background: '#FEF3C7', color: '#92400E', fontSize: 12, fontWeight: 700, padding: '2px 8px', borderRadius: 99 }}>
                 {confirmados} confirmados
               </span>
             )}
@@ -89,7 +89,7 @@ export default function PedidosPanel({ negocio }: any) {
                     }).join(' · ')}
                   </div>
                   {p.metodo_pago && (
-                    <div style={{ fontSize: 12, color: '#16A34A', marginTop: 4 }}>💳 {p.metodo_pago}</div>
+                    <div style={{ fontSize: 12, color: '#EA6C00', marginTop: 4 }}>💳 {p.metodo_pago}</div>
                   )}
                   {p.notas && (
                     <div style={{ fontSize: 12, color: '#888', marginTop: 4 }}>📝 {p.notas}</div>
@@ -97,12 +97,12 @@ export default function PedidosPanel({ negocio }: any) {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
                   <a href={`https://wa.me/${cliente?.telefono?.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#F0FDF4', color: '#16A34A', textDecoration: 'none', border: '1px solid #BBF7D0', fontWeight: 600 }}>
+                    style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#FFF7ED', color: '#EA6C00', textDecoration: 'none', border: '1px solid #FED7AA', fontWeight: 600 }}>
                     WhatsApp
                   </a>
                   {p.estado === 'confirmado' && (
                     <button onClick={() => marcarEntregado(p.id)}
-                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#16A34A', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
+                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#EA6C00', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
                       ✓ Entregado
                     </button>
                   )}

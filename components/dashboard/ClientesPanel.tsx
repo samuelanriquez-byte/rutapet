@@ -91,7 +91,7 @@ export default function ClientesPanel({ negocio }: any) {
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre, teléfono o localidad..."
           style={{ flex: 1, minWidth: 200, padding: '9px 14px', borderRadius: 9, border: '1px solid #E8E8E4', fontSize: 14, outline: 'none' }} />
         <button onClick={abrirNuevo}
-          style={{ background: '#16A34A', color: '#fff', border: 'none', borderRadius: 9, padding: '9px 20px', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
+          style={{ background: '#EA6C00', color: '#fff', border: 'none', borderRadius: 9, padding: '9px 20px', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
           + Nuevo cliente
         </button>
       </div>
@@ -106,14 +106,14 @@ export default function ClientesPanel({ negocio }: any) {
           </div>
         ) : filtered.map(c => (
           <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 20px', borderBottom: '1px solid #F3F3F0', opacity: c.activo ? 1 : 0.5 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#DCFCE7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#16A34A', flexShrink: 0 }}>
+            <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: '#EA6C00', flexShrink: 0 }}>
               {c.nombre[0].toUpperCase()}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                 <span style={{ fontWeight: 700, fontSize: 14 }}>{c.nombre}</span>
                 {c.localidad && <span style={{ fontSize: 11, color: '#888', background: '#F3F3F0', padding: '2px 7px', borderRadius: 99 }}>📍 {c.localidad}</span>}
-                <span style={{ fontSize: 11, color: '#16A34A', background: '#DCFCE7', padding: '2px 7px', borderRadius: 99 }}>🔄 cada {c.ciclo_dias} días</span>
+                <span style={{ fontSize: 11, color: '#EA6C00', background: '#FEF3C7', padding: '2px 7px', borderRadius: 99 }}>🔄 cada {c.ciclo_dias} días</span>
               </div>
               <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>
                 {c.telefono} · {(c.mascotas || []).map((m: any) => `${m.nombre} (${m.marca_alimento})`).join(', ')}
@@ -121,7 +121,7 @@ export default function ClientesPanel({ negocio }: any) {
             </div>
             <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
               <button onClick={() => abrirEditar(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer' }}>Editar</button>
-              <button onClick={() => toggleActivo(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: c.activo ? '#DC2626' : '#16A34A' }}>
+              <button onClick={() => toggleActivo(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: c.activo ? '#DC2626' : '#EA6C00' }}>
                 {c.activo ? 'Pausar' : 'Activar'}
               </button>
             </div>
@@ -166,7 +166,7 @@ export default function ClientesPanel({ negocio }: any) {
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                   {CICLOS.map(d => (
                     <button key={d} onClick={() => setForm((p: any) => ({ ...p, ciclo_dias: d }))}
-                      style={{ padding: '6px 14px', borderRadius: 8, border: `2px solid ${form.ciclo_dias === d ? '#16A34A' : '#E8E8E4'}`, background: form.ciclo_dias === d ? '#F0FDF4' : '#fff', color: form.ciclo_dias === d ? '#16A34A' : '#444', fontWeight: form.ciclo_dias === d ? 700 : 400, fontSize: 13, cursor: 'pointer' }}>
+                      style={{ padding: '6px 14px', borderRadius: 8, border: `2px solid ${form.ciclo_dias === d ? '#EA6C00' : '#E8E8E4'}`, background: form.ciclo_dias === d ? '#FFF7ED' : '#fff', color: form.ciclo_dias === d ? '#EA6C00' : '#444', fontWeight: form.ciclo_dias === d ? 700 : 400, fontSize: 13, cursor: 'pointer' }}>
                       {d} días
                     </button>
                   ))}
@@ -178,10 +178,10 @@ export default function ClientesPanel({ negocio }: any) {
             <div style={{ marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <h3 style={{ fontSize: 14, fontWeight: 700 }}>🐶 Mascotas</h3>
-                <button onClick={agregarMascota} style={{ fontSize: 12, color: '#16A34A', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>+ Agregar mascota</button>
+                <button onClick={agregarMascota} style={{ fontSize: 12, color: '#EA6C00', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>+ Agregar mascota</button>
               </div>
               {mascotas.map((m, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 80px', gap: 8, marginBottom: 10, padding: 12, background: '#F7FDF9', borderRadius: 10 }}>
+                <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 80px', gap: 8, marginBottom: 10, padding: 12, background: '#FFF8F0', borderRadius: 10 }}>
                   <input value={m.nombre} onChange={e => updateMascota(i, 'nombre', e.target.value)} placeholder="Nombre (ej: Firulais)"
                     style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
                   <input value={m.marca_alimento} onChange={e => updateMascota(i, 'marca_alimento', e.target.value)} placeholder="Marca (ej: Pedigree)"
@@ -200,7 +200,7 @@ export default function ClientesPanel({ negocio }: any) {
                 Cancelar
               </button>
               <button onClick={guardar} disabled={guardando || !form.nombre || !form.telefono}
-                style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: '#16A34A', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: '#EA6C00', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
                 {guardando ? 'Guardando...' : modalCliente ? 'Guardar cambios' : 'Agregar cliente'}
               </button>
             </div>

@@ -131,21 +131,21 @@ export default function RecordatoriosPanel({ negocio }: any) {
           </button>
           {localidades.map(loc => (
             <button key={loc} onClick={() => seleccionarPorLocalidad(loc)}
-              style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: filtroLocalidad === loc ? '#F0FDF4' : '#fff', cursor: 'pointer', color: filtroLocalidad === loc ? '#16A34A' : '#444', fontWeight: filtroLocalidad === loc ? 700 : 400 }}>
+              style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: filtroLocalidad === loc ? '#FFF7ED' : '#fff', cursor: 'pointer', color: filtroLocalidad === loc ? '#EA6C00' : '#444', fontWeight: filtroLocalidad === loc ? 700 : 400 }}>
               📍 {loc}
             </button>
           ))}
           <button
             onClick={enviarWhatsApps}
             disabled={enviando || seleccionados === 0}
-            style={{ fontSize: 13, padding: '7px 18px', borderRadius: 8, border: 'none', background: seleccionados === 0 ? '#E8E8E4' : '#16A34A', color: seleccionados === 0 ? '#999' : '#fff', cursor: seleccionados === 0 ? 'default' : 'pointer', fontWeight: 700 }}>
+            style={{ fontSize: 13, padding: '7px 18px', borderRadius: 8, border: 'none', background: seleccionados === 0 ? '#E8E8E4' : '#EA6C00', color: seleccionados === 0 ? '#999' : '#fff', cursor: seleccionados === 0 ? 'default' : 'pointer', fontWeight: 700 }}>
             {enviando ? 'Enviando...' : `📲 Enviar a ${seleccionados} seleccionados`}
           </button>
         </div>
       </div>
 
       {resultado && (
-        <div style={{ padding: '12px 24px', background: resultado.startsWith('✅') ? '#F0FDF4' : '#FEF2F2', borderBottom: '1px solid #E8E8E4', fontSize: 13, color: resultado.startsWith('✅') ? '#16A34A' : '#DC2626' }}>
+        <div style={{ padding: '12px 24px', background: resultado.startsWith('✅') ? '#FFF7ED' : '#FEF2F2', borderBottom: '1px solid #E8E8E4', fontSize: 13, color: resultado.startsWith('✅') ? '#EA6C00' : '#DC2626' }}>
           {resultado}
         </div>
       )}
@@ -162,10 +162,10 @@ export default function RecordatoriosPanel({ negocio }: any) {
           {visibles.map(c => {
             const diasRestantes = c.ciclo_dias - c.diasDesdeUltimo
             return (
-              <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 24px', borderBottom: '1px solid #F3F3F0', background: c.seleccionado ? '#F0FDF4' : '#fff', cursor: 'pointer' }}
+              <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 24px', borderBottom: '1px solid #F3F3F0', background: c.seleccionado ? '#FFF7ED' : '#fff', cursor: 'pointer' }}
                 onClick={() => toggleSeleccion(c.id)}>
                 {/* Checkbox */}
-                <div style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${c.seleccionado ? '#16A34A' : '#CCC'}`, background: c.seleccionado ? '#16A34A' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${c.seleccionado ? '#EA6C00' : '#CCC'}`, background: c.seleccionado ? '#EA6C00' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   {c.seleccionado && <span style={{ color: '#fff', fontSize: 12 }}>✓</span>}
                 </div>
                 {/* Info */}

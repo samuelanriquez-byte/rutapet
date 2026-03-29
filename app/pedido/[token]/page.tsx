@@ -59,13 +59,13 @@ export default function PedidoPage() {
   const fechaFormateada = pedido ? new Date(pedido.fecha_entrega + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' }) : ''
 
   if (loading) return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F7FDF9' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFF8F0' }}>
       <p style={{ color: '#666' }}>Cargando tu pedido...</p>
     </div>
   )
 
   if (estado === 'ok') return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F7FDF9', padding: 24 }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFF8F0', padding: 24 }}>
       <div style={{ textAlign: 'center', maxWidth: 400 }}>
         <div style={{ fontSize: 64, marginBottom: 16 }}>✅</div>
         <h1 style={{ fontSize: 24, fontWeight: 800, color: '#111', marginBottom: 8 }}>¡Pedido confirmado!</h1>
@@ -84,7 +84,7 @@ export default function PedidoPage() {
         <p style={{ color: '#666', fontSize: 14, lineHeight: 1.6 }}>Ya no podemos procesar cambios. Si necesitás algo, contactá directamente a la forrajería por WhatsApp.</p>
         {negocio?.whatsapp && (
           <a href={`https://wa.me/${negocio.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'inline-block', marginTop: 20, background: '#16A34A', color: '#fff', textDecoration: 'none', padding: '12px 28px', borderRadius: 10, fontWeight: 700 }}>
+            style={{ display: 'inline-block', marginTop: 20, background: '#EA6C00', color: '#fff', textDecoration: 'none', padding: '12px 28px', borderRadius: 10, fontWeight: 700 }}>
             Escribir por WhatsApp
           </a>
         )}
@@ -102,7 +102,7 @@ export default function PedidoPage() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: '#F7FDF9', padding: 24 }}>
+    <div style={{ minHeight: '100vh', background: '#FFF8F0', padding: 24 }}>
       <div style={{ maxWidth: 480, margin: '0 auto' }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 32, paddingTop: 24 }}>
@@ -141,7 +141,7 @@ export default function PedidoPage() {
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               {negocio.metodos_pago.map((m: string) => (
                 <button key={m} onClick={() => setMetodoPago(m)}
-                  style={{ padding: '8px 16px', borderRadius: 8, border: `2px solid ${metodoPago === m ? '#16A34A' : '#E8E8E4'}`, background: metodoPago === m ? '#F0FDF4' : '#fff', color: metodoPago === m ? '#16A34A' : '#444', fontWeight: metodoPago === m ? 700 : 400, fontSize: 14, cursor: 'pointer' }}>
+                  style={{ padding: '8px 16px', borderRadius: 8, border: `2px solid ${metodoPago === m ? '#EA6C00' : '#E8E8E4'}`, background: metodoPago === m ? '#FFF7ED' : '#fff', color: metodoPago === m ? '#EA6C00' : '#444', fontWeight: metodoPago === m ? 700 : 400, fontSize: 14, cursor: 'pointer' }}>
                   {m.charAt(0).toUpperCase() + m.slice(1)}
                 </button>
               ))}
@@ -157,14 +157,14 @@ export default function PedidoPage() {
         </div>
 
         <button onClick={confirmar} disabled={enviando || !metodoPago}
-          style={{ width: '100%', background: '#16A34A', color: '#fff', border: 'none', borderRadius: 12, padding: '16px', fontSize: 16, fontWeight: 700, cursor: enviando ? 'default' : 'pointer' }}>
+          style={{ width: '100%', background: '#EA6C00', color: '#fff', border: 'none', borderRadius: 12, padding: '16px', fontSize: 16, fontWeight: 700, cursor: enviando ? 'default' : 'pointer' }}>
           {enviando ? 'Confirmando...' : '✅ Confirmar pedido'}
         </button>
 
         <p style={{ textAlign: 'center', fontSize: 12, color: '#AAA', marginTop: 12 }}>
           Si necesitás hacer cambios especiales,{' '}
           {negocio?.whatsapp
-            ? <a href={`https://wa.me/${negocio.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#16A34A' }}>contactanos por WhatsApp</a>
+            ? <a href={`https://wa.me/${negocio.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" style={{ color: '#EA6C00' }}>contactanos por WhatsApp</a>
             : 'contactá directamente a la forrajería'}.
         </p>
       </div>
