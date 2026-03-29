@@ -6,6 +6,7 @@ import Link from 'next/link'
 
 export default function RegisterPage() {
   const [form, setForm] = useState({ nombre: '', email: '', password: '' })
+  const [showPass, setShowPass] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -38,8 +39,14 @@ export default function RegisterPage() {
             style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
           <input value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} type="email" placeholder="Email"
             style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
-          <input value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} type="password" placeholder="Contraseña"
-            style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
+          <div style={{ position: 'relative' }}>
+            <input value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} type={showPass ? 'text' : 'password'} placeholder="Contraseña"
+              style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 44px 12px 16px', color: '#111', fontSize: 14, outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+            <button type="button" onClick={() => setShowPass(p => !p)}
+              style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: '#888' }}>
+              {showPass ? '🙈' : '👁️'}
+            </button>
+          </div>
           {error && <p style={{ color: '#E53E3E', fontSize: 13 }}>{error}</p>}
           <button onClick={register} disabled={loading}
             style={{ background: '#EA6C00', color: '#fff', border: 'none', borderRadius: 10, padding: '13px', fontSize: 15, fontWeight: 700, cursor: 'pointer' }}>
