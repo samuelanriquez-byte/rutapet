@@ -184,8 +184,13 @@ export default function ClientesPanel({ negocio }: any) {
                 <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 80px', gap: 8, marginBottom: 10, padding: 12, background: '#FFF8F0', borderRadius: 10 }}>
                   <input value={m.nombre} onChange={e => updateMascota(i, 'nombre', e.target.value)} placeholder="Nombre (ej: Firulais)"
                     style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
-                  <input value={m.marca_alimento} onChange={e => updateMascota(i, 'marca_alimento', e.target.value)} placeholder="Marca (ej: Pedigree)"
-                    style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
+                  <div>
+                    <input value={m.marca_alimento} onChange={e => updateMascota(i, 'marca_alimento', e.target.value)} placeholder="Marca (ej: Pedigree)" list="marcas-list"
+                      style={{ width: '100%', padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
+                    <datalist id="marcas-list">
+                      {(negocio?.marcas_alimento || []).map((marca: string) => <option key={marca} value={marca} />)}
+                    </datalist>
+                  </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <input type="number" value={m.kilos} onChange={e => updateMascota(i, 'kilos', Number(e.target.value))} min={1}
                       style={{ width: '100%', padding: '8px 6px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', textAlign: 'center' }} />
