@@ -24,7 +24,7 @@ export async function sendWhatsApp(to: string, message: string): Promise<void> {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        From: `whatsapp:${from}`,
+        From: from.startsWith('whatsapp:') ? from : `whatsapp:${from}`,
         To: `whatsapp:${formatPhone(to)}`,
         Body: message,
       }).toString(),
