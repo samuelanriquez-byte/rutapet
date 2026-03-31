@@ -156,6 +156,9 @@ export default function RecordatoriosPanel({ negocio }: any) {
           <div style={{ fontSize: 40, marginBottom: 12 }}>🎉</div>
           <p style={{ fontWeight: 600, color: '#444' }}>Todo al día</p>
           <p style={{ fontSize: 13, marginTop: 4 }}>Ningún cliente se queda sin alimento en los próximos días.</p>
+          <p style={{ fontSize: 12, color: '#BBB', marginTop: 12 }}>
+            💡 Un cliente aparece acá cuando confirmó al menos un pedido. Si no aparece, verificá que tenga un pedido registrado.
+          </p>
         </div>
       ) : (
         <div>

@@ -55,7 +55,14 @@ export default async function DashboardPage() {
       )}
 
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: '#111' }}>Buen día 👋</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: '#111' }}>
+          {(() => {
+            const h = new Date().getHours()
+            if (h < 12) return 'Buen día 👋'
+            if (h < 20) return 'Buenas tardes 👋'
+            return 'Buenas noches 👋'
+          })()}
+        </h1>
         <p style={{ color: '#666', fontSize: 14, marginTop: 4 }}>{negocio.nombre}</p>
       </div>
 

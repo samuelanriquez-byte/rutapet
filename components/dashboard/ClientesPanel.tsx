@@ -125,6 +125,11 @@ export default function ClientesPanel({ negocio }: any) {
               <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>
                 {c.telefono} · {(c.mascotas || []).map((m: any) => `${m.nombre} (${m.marca_alimento})`).join(', ')}
               </div>
+              {c.ultimo_pedido_fecha && (
+                <div style={{ fontSize: 11, color: '#AAA', marginTop: 2 }}>
+                  Último pedido: {new Date(c.ultimo_pedido_fecha + 'T00:00:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </div>
+              )}
             </div>
             <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
               <button onClick={() => abrirEditar(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer' }}>Editar</button>
