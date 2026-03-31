@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 const CICLOS = [7, 15, 20, 30, 45, 60]
+const KILOS_PERRO = [1, 2, 7.5, 8, 15, 20, 22, 25]
+const KILOS_GATO = [0.5, 1, 2, 3, 7.5, 10]
+const KILOS_TODOS = [...new Set([...KILOS_PERRO, ...KILOS_GATO])].sort((a, b) => a - b)
 
 export default function ClientesPanel({ negocio }: any) {
   const [clientes, setClientes] = useState<any[]>([])
@@ -25,20 +28,20 @@ export default function ClientesPanel({ negocio }: any) {
 
   function abrirNuevo() {
     setForm({ nombre: '', telefono: '', email: '', direccion: '', localidad: '', codigo_postal: '', partido: '', observacion_domicilio: '', observacion_cliente: '', ciclo_dias: 30 })
-    setMascotas([{ nombre: '', marca_alimento: '', kilos: 15 }])
+    setMascotas([{ nombre: '', raza: '', marca_alimento: '', kilos: 15 }])
     setModalCliente(null)
     setMostrarForm(true)
   }
 
   function abrirEditar(c: any) {
     setForm({ ...c })
-    setMascotas(c.mascotas?.length ? c.mascotas : [{ nombre: '', marca_alimento: '', kilos: 15 }])
+    setMascotas(c.mascotas?.length ? c.mascotas : [{ nombre: '', raza: '', marca_alimento: '', kilos: 15 }])
     setModalCliente(c)
     setMostrarForm(true)
   }
 
   function agregarMascota() {
-    setMascotas(p => [...p, { nombre: '', marca_alimento: '', kilos: 15 }])
+    setMascotas(p => [...p, { nombre: '', raza: '', marca_alimento: '', kilos: 15 }])
   }
 
   function updateMascota(i: number, field: string, value: any) {
@@ -159,7 +162,6 @@ export default function ClientesPanel({ negocio }: any) {
                 { field: 'localidad', label: 'Localidad', placeholder: 'Palermo' },
                 { field: 'codigo_postal', label: 'Código postal', placeholder: '1425' },
                 { field: 'partido', label: 'Partido', placeholder: 'CABA' },
-                { field: 'provincia', label: 'Provincia', placeholder: 'Buenos Aires' },
               ].map(({ field, label, placeholder }) => (
                 <div key={field} style={{ gridColumn: field === 'nombre' || field === 'telefono' ? 'auto' : 'auto' }}>
                   <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>{label}</label>
@@ -168,7 +170,7 @@ export default function ClientesPanel({ negocio }: any) {
                 </div>
               ))}
               <div style={{ gridColumn: '1/-1', background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#166534' }}>
-                📱 Podés poner el número como quieras — el sistema lo ajusta automáticamente para WhatsApp.
+                📱 Podés poner tu número de WhatsApp como quieras — el sistema lo ajusta automáticamente.
               </div>
               <div style={{ gridColumn: '1/-1' }}>
                 <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Observación domicilio</label>
@@ -200,20 +202,27 @@ export default function ClientesPanel({ negocio }: any) {
                 <button onClick={agregarMascota} style={{ fontSize: 12, color: '#EA6C00', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>+ Agregar mascota</button>
               </div>
               {mascotas.map((m, i) => (
-                <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 80px', gap: 8, marginBottom: 10, padding: 12, background: '#FFF8F0', borderRadius: 10 }}>
-                  <input value={m.nombre} onChange={e => updateMascota(i, 'nombre', e.target.value)} placeholder="Nombre (ej: Firulais)"
-                    style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
-                  <div>
-                    <input value={m.marca_alimento} onChange={e => updateMascota(i, 'marca_alimento', e.target.value)} placeholder="Marca (ej: Pedigree)" list="marcas-list"
-                      style={{ width: '100%', padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
-                    <datalist id="marcas-list">
-                      {(negocio?.marcas_alimento || []).map((marca: string) => <option key={marca} value={marca} />)}
-                    </datalist>
+                <div key={i} style={{ marginBottom: 10, padding: 12, background: '#FFF8F0', borderRadius: 10 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+                    <input value={m.nombre} onChange={e => updateMascota(i, 'nombre', e.target.value)} placeholder="Nombre (ej: Firulais)"
+                      style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
+                    <input value={m.raza || ''} onChange={e => updateMascota(i, 'raza', e.target.value)} placeholder="Raza (ej: Caniche, Labrador)"
+                      style={{ padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <input type="number" value={m.kilos} onChange={e => updateMascota(i, 'kilos', Number(e.target.value))} min={1}
-                      style={{ width: '100%', padding: '8px 6px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', textAlign: 'center' }} />
-                    <span style={{ fontSize: 11, color: '#888' }}>kg</span>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: 8 }}>
+                    <div>
+                      <input value={m.marca_alimento} onChange={e => updateMascota(i, 'marca_alimento', e.target.value)} placeholder="Marca (ej: Pedigree)" list="marcas-list"
+                        style={{ width: '100%', padding: '8px 10px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
+                      <datalist id="marcas-list">
+                        {(negocio?.marcas_alimento || []).map((marca: string) => <option key={marca} value={marca} />)}
+                      </datalist>
+                    </div>
+                    <select value={m.kilos} onChange={e => updateMascota(i, 'kilos', Number(e.target.value))}
+                      style={{ width: '100%', padding: '8px 6px', borderRadius: 7, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', background: '#fff' }}>
+                      {KILOS_TODOS.map(k => (
+                        <option key={k} value={k}>{k} kg</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               ))}

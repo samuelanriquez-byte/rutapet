@@ -2,6 +2,18 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 
+const KILOS_COMUNES = [0.5, 1, 2, 3, 7.5, 8, 10, 15, 20, 22, 25]
+
+function kiloAnterior(actual: number) {
+  const menores = KILOS_COMUNES.filter(k => k < actual)
+  return menores.length ? menores[menores.length - 1] : actual
+}
+
+function kiloPosterior(actual: number) {
+  const mayores = KILOS_COMUNES.filter(k => k > actual)
+  return mayores.length ? mayores[0] : actual
+}
+
 export default function PedidoPage() {
   const { token } = useParams()
   const [pedido, setPedido] = useState<any>(null)
@@ -126,10 +138,10 @@ export default function PedidoPage() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                 <span style={{ fontSize: 13, color: '#666' }}>Kilos</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <button onClick={() => setKilos(p => ({ ...p, [m.id]: Math.max(1, (p[m.id] || m.kilos) - 1) }))}
+                  <button onClick={() => setKilos(p => ({ ...p, [m.id]: kiloAnterior(p[m.id] || m.kilos) }))}
                     style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', fontSize: 18, cursor: 'pointer' }}>−</button>
                   <span style={{ fontSize: 15, fontWeight: 700, minWidth: 48, textAlign: 'center' }}>{kilos[m.id] || m.kilos} kg</span>
-                  <button onClick={() => setKilos(p => ({ ...p, [m.id]: (p[m.id] || m.kilos) + 1 }))}
+                  <button onClick={() => setKilos(p => ({ ...p, [m.id]: kiloPosterior(p[m.id] || m.kilos) }))}
                     style={{ width: 32, height: 32, borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', fontSize: 18, cursor: 'pointer' }}>+</button>
                 </div>
               </div>
