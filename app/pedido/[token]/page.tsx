@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { useParams } from 'next/navigation'
 
 export default function PedidoPage() {
@@ -20,14 +19,12 @@ export default function PedidoPage() {
 
   useEffect(() => {
     async function cargar() {
-      const supabase = createClient()
-      const { data: p } = await supabase.from('pedidos').select('*').eq('token', token).single()
-      if (!p) { setEstado('error'); setLoading(false); return }
-      if (p.estado === 'confirmado') { setPedido(p); setEstado('ok'); setLoading(false); return }
+      const res = await fetch(`/api/pedidos/obtener/${token}`)
+      if (!res.ok) { setEstado('error'); setLoading(false); return }
 
-      const { data: c } = await supabase.from('clientes').select('*').eq('id', p.cliente_id).single()
-      const { data: m } = await supabase.from('mascotas').select('*').eq('cliente_id', p.cliente_id)
-      const { data: n } = await supabase.from('negocios').select('*').eq('id', p.negocio_id).single()
+      const { pedido: p, cliente: c, mascotas: m, negocio: n } = await res.json()
+
+      if (p.estado === 'confirmado') { setPedido(p); setEstado('ok'); setLoading(false); return }
 
       const kilosIniciales: Record<string, number> = {}
       const marcasIniciales: Record<string, string> = {}
@@ -63,7 +60,9 @@ export default function PedidoPage() {
     setEnviando(false)
   }
 
-  const fechaFormateada = pedido ? new Date(pedido.fecha_entrega + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' }) : ''
+  const fechaFormateada = pedido
+    ? new Date(pedido.fecha_entrega + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
+    : ''
 
   if (loading) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFF8F0' }}>
@@ -112,7 +111,6 @@ export default function PedidoPage() {
     <div style={{ minHeight: '100vh', background: '#FFF8F0', padding: 24 }}>
       <div style={{ maxWidth: 480, margin: '0 auto' }}>
 
-        {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 28, paddingTop: 24 }}>
           <div style={{ width: 56, height: 56, borderRadius: '50%', background: '#EA6C00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, margin: '0 auto 12px' }}>🐾</div>
           <h1 style={{ fontSize: 20, fontWeight: 800, color: '#111', marginBottom: 2 }}>{negocio?.nombre}</h1>
@@ -120,7 +118,6 @@ export default function PedidoPage() {
           {cliente && <p style={{ color: '#666', fontSize: 14, marginTop: 6 }}>Hola <strong>{cliente.nombre}</strong>, confirmá tu pedido 👇</p>}
         </div>
 
-        {/* Mascotas */}
         <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 24, marginBottom: 16 }}>
           <h2 style={{ fontSize: 14, fontWeight: 700, color: '#111', marginBottom: 16 }}>🐶 Tu pedido</h2>
           {mascotas.map(m => (
@@ -150,14 +147,12 @@ export default function PedidoPage() {
           <p style={{ fontSize: 11, color: '#AAA' }}>Podés modificar hasta 8hs antes de la entrega.</p>
         </div>
 
-        {/* Domicilio */}
         <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 24, marginBottom: 16 }}>
           <h2 style={{ fontSize: 14, fontWeight: 700, color: '#111', marginBottom: 10 }}>📍 Domicilio de entrega</h2>
           <input value={direccion} onChange={e => setDireccion(e.target.value)} placeholder="Ej: Av. Corrientes 1234, piso 3B"
             style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #E8E8E4', fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
         </div>
 
-        {/* Método de pago */}
         {negocio?.metodos_pago?.length > 0 && (
           <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 24, marginBottom: 16 }}>
             <h2 style={{ fontSize: 14, fontWeight: 700, color: '#111', marginBottom: 14 }}>💳 Método de pago</h2>
@@ -172,7 +167,6 @@ export default function PedidoPage() {
           </div>
         )}
 
-        {/* Notas */}
         <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 24, marginBottom: 24 }}>
           <h2 style={{ fontSize: 14, fontWeight: 700, color: '#111', marginBottom: 10 }}>📝 Notas (opcional)</h2>
           <textarea value={notas} onChange={e => setNotas(e.target.value)} placeholder="Ej: tocar timbre 2B, dejar en portería..."

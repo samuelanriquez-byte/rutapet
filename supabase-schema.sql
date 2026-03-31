@@ -81,10 +81,8 @@ CREATE POLICY "negocios_own" ON negocios FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "clientes_own" ON clientes FOR ALL USING (negocio_id IN (SELECT id FROM negocios WHERE user_id = auth.uid()));
 CREATE POLICY "mascotas_own" ON mascotas FOR ALL USING (cliente_id IN (SELECT c.id FROM clientes c JOIN negocios n ON c.negocio_id = n.id WHERE n.user_id = auth.uid()));
 CREATE POLICY "pedidos_own" ON pedidos FOR ALL USING (negocio_id IN (SELECT id FROM negocios WHERE user_id = auth.uid()));
-CREATE POLICY "pedidos_public_read" ON pedidos FOR SELECT USING (true);
-CREATE POLICY "pedidos_public_update" ON pedidos FOR UPDATE USING (true);
-CREATE POLICY "mascotas_public_read" ON mascotas FOR SELECT USING (true);
-CREATE POLICY "clientes_public_read" ON clientes FOR SELECT USING (true);
+-- Las rutas públicas (pedido/[token]) usan el admin client en el servidor
+-- No se necesitan políticas públicas permisivas
 
 -- Trigger updated_at
 CREATE OR REPLACE FUNCTION update_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW(); RETURN NEW; END; $$ LANGUAGE plpgsql;

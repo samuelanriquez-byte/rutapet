@@ -10,6 +10,9 @@ export default async function ConfiguracionPage() {
   const { data: negocio } = await supabase.from('negocios').select('*').eq('user_id', user.id).single()
   if (!negocio) redirect('/login')
 
+  const trialEnds = negocio.trial_ends_at ? new Date(negocio.trial_ends_at) : null
+  if (trialEnds && trialEnds < new Date() && negocio.plan === 'trial') redirect('/upgrade')
+
   return (
     <div style={{ padding: '32px 24px', maxWidth: 700, margin: '0 auto' }}>
       <div style={{ marginBottom: 32 }}>
