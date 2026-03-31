@@ -148,7 +148,7 @@ export default function ClientesPanel({ negocio }: any) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
               {[
                 { field: 'nombre', label: 'Nombre *', placeholder: 'Juan García' },
-                { field: 'telefono', label: 'Teléfono *', placeholder: '11 1234-5678' },
+                { field: 'telefono', label: 'Teléfono * (sin 0 ni 15, con 9)', placeholder: 'Ej: 91112345678' },
                 { field: 'email', label: 'Email', placeholder: 'juan@email.com' },
                 { field: 'direccion', label: 'Dirección', placeholder: 'Av. Corrientes 1234' },
                 { field: 'localidad', label: 'Localidad', placeholder: 'Palermo' },
@@ -161,6 +161,10 @@ export default function ClientesPanel({ negocio }: any) {
                     style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
                 </div>
               ))}
+              <div style={{ gridColumn: '1/-1', background: '#FFF7ED', border: '1px solid #FDDCB5', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#92400E' }}>
+                📱 <strong>Formato del teléfono:</strong> sin el 0 y sin el 15, con 9 adelante.<br />
+                Ej: <code>011 15-1234-5678</code> → <strong>91112345678</strong> · <code>0264 15-123-4567</code> → <strong>92641234567</strong>
+              </div>
               <div style={{ gridColumn: '1/-1' }}>
                 <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Observación domicilio</label>
                 <input value={form.observacion_domicilio || ''} onChange={e => setForm((p: any) => ({ ...p, observacion_domicilio: e.target.value }))} placeholder="Ej: timbre 3B, dejar en portería..."
