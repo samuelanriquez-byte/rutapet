@@ -27,7 +27,7 @@ export default function ClientesPanel({ negocio }: any) {
   }
 
   function abrirNuevo() {
-    setForm({ nombre: '', telefono: '', email: '', direccion: '', localidad: '', codigo_postal: '', partido: '', observacion_domicilio: '', observacion_cliente: '', ciclo_dias: 30 })
+    setForm({ nombre: '', telefono: '', email: '', direccion: '', localidad: '', codigo_postal: '', partido: '', observacion_domicilio: '', observacion_cliente: '', ciclo_dias: 30, ultimo_pedido_fecha: '' })
     setMascotas([{ nombre: '', raza: '', marca_alimento: '', kilos: 15 }])
     setModalCliente(null)
     setMostrarForm(true)
@@ -181,6 +181,12 @@ export default function ClientesPanel({ negocio }: any) {
                 <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Observación del cliente</label>
                 <input value={form.observacion_cliente || ''} onChange={e => setForm((p: any) => ({ ...p, observacion_cliente: e.target.value }))} placeholder="Ej: prefiere que no lo llamen"
                   style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
+              </div>
+              <div style={{ gridColumn: '1/-1' }}>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Último pedido</label>
+                <input type="date" value={form.ultimo_pedido_fecha || ''} onChange={e => setForm((p: any) => ({ ...p, ultimo_pedido_fecha: e.target.value }))}
+                  style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none' }} />
+                <p style={{ fontSize: 11, color: '#888', marginTop: 4 }}>Usalo para que el sistema sepa cuándo mandar el próximo recordatorio.</p>
               </div>
               <div style={{ gridColumn: '1/-1' }}>
                 <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 8 }}>Ciclo de compra</label>
