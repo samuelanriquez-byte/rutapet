@@ -63,8 +63,9 @@ export default function LandingPage() {
         <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 12, letterSpacing: -1 }}>Un solo precio, todo incluido</h2>
         <p style={{ color: '#666', marginBottom: 48, fontSize: 16 }}>Sin sorpresas. Sin límite de clientes.</p>
         <div style={{ background: '#fff', border: '2px solid #FDDCB5', borderRadius: 20, padding: 40, boxShadow: '0 4px 24px rgba(234,108,0,0.08)' }}>
-          <div style={{ fontSize: 56, fontWeight: 900, color: '#EA6C00', letterSpacing: -2 }}>$35</div>
-          <div style={{ color: '#888', marginBottom: 32, fontSize: 14 }}>USD / mes · Clientes ilimitados · WhatsApp incluido</div>
+          <div style={{ fontSize: 13, color: '#EA6C00', fontWeight: 700, marginBottom: 8, letterSpacing: 1 }}>PRECIO MENSUAL</div>
+          <div style={{ fontSize: 52, fontWeight: 900, color: '#EA6C00', letterSpacing: -2, lineHeight: 1 }}>$29.900</div>
+          <div style={{ color: '#888', marginBottom: 32, fontSize: 14, marginTop: 8 }}>ARS / mes · Clientes ilimitados · WhatsApp incluido</div>
           <ul style={{ textAlign: 'left', listStyle: 'none', marginBottom: 36 }}>
             {['Clientes y mascotas ilimitados', 'WhatsApp automático incluido', 'Pedidos organizados por día', 'Filtro por localidad', '45 días de prueba gratis'].map(f => (
               <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, fontSize: 14, color: '#333' }}>
@@ -76,6 +77,42 @@ export default function LandingPage() {
             Empezar ahora →
           </Link>
         </div>
+      </section>
+
+      {/* FAQ */}
+      <section style={{ maxWidth: 640, margin: '0 auto', padding: '0 24px 80px' }}>
+        <h2 style={{ fontSize: 28, fontWeight: 800, marginBottom: 40, textAlign: 'center', letterSpacing: -1 }}>Preguntas frecuentes</h2>
+        {[
+          {
+            q: '¿Cuánto cuesta RutaPet?',
+            a: '$29.900 ARS por mes. Un solo plan, todo incluido. Sin costos por mensaje ni por cantidad de clientes.'
+          },
+          {
+            q: '¿Hay período de prueba?',
+            a: 'Sí, 45 días completamente gratis. Sin tarjeta de crédito ni compromiso. Si no te sirve, no pagás nada.'
+          },
+          {
+            q: '¿Los mensajes de WhatsApp tienen costo extra?',
+            a: 'No. El costo de los mensajes ya está incluido en el precio mensual.'
+          },
+          {
+            q: '¿Funciona con cualquier raza o tipo de alimento?',
+            a: 'Sí. Podés cargar cualquier marca de alimento y personalizar el ciclo de compra de cada mascota según sus kilos.'
+          },
+          {
+            q: '¿Cómo confirman el pedido los clientes?',
+            a: 'Reciben un WhatsApp con un link. Con dos clicks confirman el pedido, pueden modificar los kilos y elegir cómo pagar. No necesitan instalar nada.'
+          },
+          {
+            q: '¿Puedo usarlo si tengo clientes en distintas zonas?',
+            a: 'Sí. Podés filtrar los recordatorios por localidad para organizar mejor los repartos por día.'
+          },
+        ].map(({ q, a }) => (
+          <div key={q} style={{ borderBottom: '1px solid #F0EDE8', padding: '24px 0' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 10, color: '#111' }}>{q}</h3>
+            <p style={{ fontSize: 14, color: '#555', lineHeight: 1.7, margin: 0 }}>{a}</p>
+          </div>
+        ))}
       </section>
 
       {/* Footer */}
