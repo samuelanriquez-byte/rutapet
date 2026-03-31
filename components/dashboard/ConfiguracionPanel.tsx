@@ -4,6 +4,19 @@ import { createClient } from '@/lib/supabase/client'
 
 const METODOS_PAGO_OPCIONES = ['efectivo', 'transferencia', 'débito', 'crédito', 'mercado pago']
 
+const MENSAJE_DEFAULT = `¡Hola {nombre}! 👋
+
+Te recordamos que a tu mascota le está por terminar el alimento:
+
+{mascotas}
+
+*{negocio}* estará repartiendo el *{fecha}* por tu zona.
+
+Confirmá tu pedido acá 👇
+{link}
+
+_Podés modificar cantidad, peso o dirección hasta 8hs antes de la entrega._`
+
 export default function ConfiguracionPanel({ negocio }: any) {
   const [form, setForm] = useState({
     nombre: negocio.nombre || '',
@@ -13,7 +26,10 @@ export default function ConfiguracionPanel({ negocio }: any) {
     dias_anticipacion: negocio.dias_anticipacion || 1,
     metodos_pago: negocio.metodos_pago || ['efectivo'],
     marcas_alimento: negocio.marcas_alimento || [],
+    mensaje_whatsapp: negocio.mensaje_whatsapp || MENSAJE_DEFAULT,
+    promocion_whatsapp: negocio.promocion_whatsapp || '',
   })
+  const [vistaPrevia, setVistaPrevia] = useState(false)
   const [nuevaMarca, setNuevaMarca] = useState('')
   const [guardando, setGuardando] = useState(false)
   const [guardado, setGuardado] = useState(false)
@@ -119,6 +135,64 @@ export default function ConfiguracionPanel({ negocio }: any) {
               {d} día{d > 1 ? 's' : ''}
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Mensaje WhatsApp */}
+      <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 24 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>💬 Mensaje de WhatsApp</h2>
+        <p style={{ fontSize: 12, color: '#888', marginBottom: 12 }}>
+          Personalizá el mensaje que reciben tus clientes. Podés usar estas variables:
+          <span style={{ color: '#EA6C00', fontWeight: 600 }}> {'{nombre}'} {'{mascotas}'} {'{fecha}'} {'{link}'} {'{negocio}'}</span>
+        </p>
+
+        <textarea
+          value={form.mensaje_whatsapp}
+          onChange={e => setForm(p => ({ ...p, mensaje_whatsapp: e.target.value }))}
+          rows={10}
+          style={{ width: '100%', padding: '12px', borderRadius: 8, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', resize: 'vertical', fontFamily: 'inherit', boxSizing: 'border-box', lineHeight: 1.6 }}
+        />
+
+        <div style={{ marginTop: 12 }}>
+          <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>
+            🎁 Promoción (opcional) — se agrega al final del mensaje
+          </label>
+          <input
+            value={form.promocion_whatsapp}
+            onChange={e => setForm(p => ({ ...p, promocion_whatsapp: e.target.value }))}
+            placeholder="Ej: Si confirmás hoy te hacemos un 5% de descuento 🎉"
+            style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #E8E8E4', fontSize: 13, outline: 'none', boxSizing: 'border-box' }}
+          />
+        </div>
+
+        <div style={{ marginTop: 16 }}>
+          <button onClick={() => setVistaPrevia(v => !v)}
+            style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: '#444' }}>
+            {vistaPrevia ? 'Ocultar vista previa' : '👁 Ver vista previa'}
+          </button>
+        </div>
+
+        {vistaPrevia && (
+          <div style={{ marginTop: 16, background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 12, padding: 20 }}>
+            <p style={{ fontSize: 11, color: '#166534', fontWeight: 700, marginBottom: 12 }}>VISTA PREVIA DEL MENSAJE</p>
+            <pre style={{ fontSize: 13, color: '#111', whiteSpace: 'pre-wrap', fontFamily: 'inherit', margin: 0, lineHeight: 1.7 }}>
+              {form.mensaje_whatsapp
+                .replace('{nombre}', 'Juan García')
+                .replace('{mascotas}', '• Firulais: Pedigree 15kg')
+                .replace('{fecha}', 'jueves 3 de abril')
+                .replace('{link}', 'https://ciclopet.vercel.app/pedido/abc123')
+                .replace('{negocio}', form.nombre || 'Tu Forrajería')
+              }
+              {form.promocion_whatsapp ? `\n\n🎁 ${form.promocion_whatsapp}` : ''}
+            </pre>
+          </div>
+        )}
+
+        <div style={{ marginTop: 12 }}>
+          <button onClick={() => setForm(p => ({ ...p, mensaje_whatsapp: MENSAJE_DEFAULT }))}
+            style={{ fontSize: 12, color: '#888', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+            Restaurar mensaje original
+          </button>
         </div>
       </div>
 

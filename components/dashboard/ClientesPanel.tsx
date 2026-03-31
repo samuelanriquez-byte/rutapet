@@ -159,6 +159,7 @@ export default function ClientesPanel({ negocio }: any) {
                 { field: 'localidad', label: 'Localidad', placeholder: 'Palermo' },
                 { field: 'codigo_postal', label: 'Código postal', placeholder: '1425' },
                 { field: 'partido', label: 'Partido', placeholder: 'CABA' },
+                { field: 'provincia', label: 'Provincia', placeholder: 'Buenos Aires' },
               ].map(({ field, label, placeholder }) => (
                 <div key={field} style={{ gridColumn: field === 'nombre' || field === 'telefono' ? 'auto' : 'auto' }}>
                   <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>{label}</label>
