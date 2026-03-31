@@ -34,6 +34,13 @@ export default function PedidosPanel({ negocio }: any) {
     await cargar()
   }
 
+  async function eliminarPedido(pedidoId: string) {
+    if (!confirm('¿Eliminar este pedido?')) return
+    const supabase = createClient()
+    await supabase.from('pedidos').delete().eq('id', pedidoId)
+    await cargar()
+  }
+
   const confirmados = pedidos.filter(p => p.estado === 'confirmado').length
 
   return (
@@ -106,6 +113,10 @@ export default function PedidosPanel({ negocio }: any) {
                       ✓ Entregado
                     </button>
                   )}
+                  <button onClick={() => eliminarPedido(p.id)}
+                    style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#FEF2F2', color: '#DC2626', border: '1px solid #FCA5A5', cursor: 'pointer' }}>
+                    Eliminar
+                  </button>
                 </div>
               </div>
             )

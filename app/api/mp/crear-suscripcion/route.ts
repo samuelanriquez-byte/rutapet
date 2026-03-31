@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ciclopet.vercel.app'
 
     const preferencia = await crearPreferencia({
-      titulo: 'RutaPet — Suscripción mensual',
+      titulo: 'RutaPet',
       monto: 29900,
       negocioId: negocio.id,
       externalRef: `suscripcion_${negocio.id}`,

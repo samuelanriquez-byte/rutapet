@@ -76,6 +76,13 @@ export default function ClientesPanel({ negocio }: any) {
     await cargar()
   }
 
+  async function eliminarCliente(c: any) {
+    if (!confirm(`¿Eliminar a ${c.nombre}? Se borrarán sus mascotas y pedidos.`)) return
+    const supabase = createClient()
+    await supabase.from('clientes').delete().eq('id', c.id)
+    await cargar()
+  }
+
   const filtered = clientes.filter(c =>
     c.nombre.toLowerCase().includes(search.toLowerCase()) ||
     (c.telefono || '').includes(search) ||
@@ -123,6 +130,9 @@ export default function ClientesPanel({ negocio }: any) {
               <button onClick={() => abrirEditar(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer' }}>Editar</button>
               <button onClick={() => toggleActivo(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: c.activo ? '#DC2626' : '#EA6C00' }}>
                 {c.activo ? 'Pausar' : 'Activar'}
+              </button>
+              <button onClick={() => eliminarCliente(c)} style={{ fontSize: 12, padding: '5px 12px', borderRadius: 7, border: '1px solid #FCA5A5', background: '#FEF2F2', cursor: 'pointer', color: '#DC2626' }}>
+                Eliminar
               </button>
             </div>
           </div>
