@@ -20,9 +20,9 @@ export default async function AdminPage() {
 
   // Métricas globales
   const total = negocios?.length || 0
-  const enTrial = negocios?.filter(n => n.plan === 'trial' && new Date(n.trial_ends_at) > new Date()).length || 0
-  const pagando = negocios?.filter(n => n.plan === 'monthly').length || 0
-  const trialVencido = negocios?.filter(n => n.plan === 'trial' && new Date(n.trial_ends_at) < new Date()).length || 0
+  const enTrial = negocios?.filter((n: any) => n.plan === 'trial' && new Date(n.trial_ends_at) > new Date()).length || 0
+  const pagando = negocios?.filter((n: any) => n.plan === 'monthly').length || 0
+  const trialVencido = negocios?.filter((n: any) => n.plan === 'trial' && new Date(n.trial_ends_at) < new Date()).length || 0
 
   return (
     <div style={{ minHeight: '100vh', background: '#F7F7F5' }}>
