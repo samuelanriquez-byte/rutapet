@@ -6,7 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://rutapet.com.ar'
 
 export async function POST(req: NextRequest) {
   try {
-    const { negocioId, clienteIds } = await req.json()
+    const { negocioId, clienteIds, diasEntrega = 1 } = await req.json()
     if (!negocioId || !clienteIds?.length) {
       return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 })
     }
@@ -15,10 +15,10 @@ export async function POST(req: NextRequest) {
     const { data: negocio } = await supabase.from('negocios').select('nombre, metodos_pago, mensaje_whatsapp, promocion_whatsapp').eq('id', negocioId).single()
 
     let enviados = 0
-    const mañana = new Date()
-    mañana.setDate(mañana.getDate() + 1)
-    const fechaEntrega = mañana.toISOString().split('T')[0]
-    const fechaFormateada = mañana.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
+    const fechaEntregaDate = new Date()
+    fechaEntregaDate.setDate(fechaEntregaDate.getDate() + diasEntrega)
+    const fechaEntrega = fechaEntregaDate.toISOString().split('T')[0]
+    const fechaFormateada = fechaEntregaDate.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
 
     for (const clienteId of clienteIds) {
       try {

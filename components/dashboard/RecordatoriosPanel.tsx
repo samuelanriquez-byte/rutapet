@@ -21,6 +21,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
   const [resultado, setResultado] = useState('')
   const [filtroLocalidad, setFiltroLocalidad] = useState('todas')
   const [localidades, setLocalidades] = useState<string[]>([])
+  const [diasEntrega, setDiasEntrega] = useState(1)
 
   useEffect(() => { cargar() }, [negocio])
 
@@ -95,7 +96,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
       const res = await fetch('/api/whatsapp/enviar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ negocioId: negocio.id, clienteIds: seleccionados.map(c => c.id) }),
+        body: JSON.stringify({ negocioId: negocio.id, clienteIds: seleccionados.map(c => c.id), diasEntrega }),
       })
       const data = await res.json()
       if (data.ok) {
@@ -132,23 +133,38 @@ export default function RecordatoriosPanel({ negocio }: any) {
         </div>
 
         {/* Acciones */}
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <button onClick={seleccionarTodos}
-            style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: '#444' }}>
-            Seleccionar todos
-          </button>
-          {localidades.map(loc => (
-            <button key={loc} onClick={() => seleccionarPorLocalidad(loc)}
-              style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: filtroLocalidad === loc ? '#FFF7ED' : '#fff', cursor: 'pointer', color: filtroLocalidad === loc ? '#EA6C00' : '#444', fontWeight: filtroLocalidad === loc ? 700 : 400 }}>
-              📍 {loc}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            <span style={{ fontSize: 12, color: '#888', fontWeight: 600 }}>Entrega:</span>
+            {[
+              { d: 1, label: 'Mañana' },
+              { d: 2, label: 'En 2 días' },
+              { d: 3, label: 'En 3 días' },
+            ].map(({ d, label }) => (
+              <button key={d} onClick={() => setDiasEntrega(d)}
+                style={{ fontSize: 13, padding: '6px 12px', borderRadius: 8, border: `1px solid ${diasEntrega === d ? '#EA6C00' : '#E8E8E4'}`, background: diasEntrega === d ? '#FFF7ED' : '#fff', color: diasEntrega === d ? '#EA6C00' : '#444', fontWeight: diasEntrega === d ? 700 : 400, cursor: 'pointer' }}>
+                {label}
+              </button>
+            ))}
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <button onClick={seleccionarTodos}
+              style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: '#444' }}>
+              Seleccionar todos
             </button>
-          ))}
-          <button
-            onClick={enviarWhatsApps}
-            disabled={enviando || seleccionados === 0}
-            style={{ fontSize: 13, padding: '7px 18px', borderRadius: 8, border: 'none', background: seleccionados === 0 ? '#E8E8E4' : '#EA6C00', color: seleccionados === 0 ? '#999' : '#fff', cursor: seleccionados === 0 ? 'default' : 'pointer', fontWeight: 700 }}>
-            {enviando ? 'Enviando...' : `📲 Enviar a ${seleccionados} seleccionados`}
-          </button>
+            {localidades.map(loc => (
+              <button key={loc} onClick={() => seleccionarPorLocalidad(loc)}
+                style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: filtroLocalidad === loc ? '#FFF7ED' : '#fff', cursor: 'pointer', color: filtroLocalidad === loc ? '#EA6C00' : '#444', fontWeight: filtroLocalidad === loc ? 700 : 400 }}>
+                📍 {loc}
+              </button>
+            ))}
+            <button
+              onClick={enviarWhatsApps}
+              disabled={enviando || seleccionados === 0}
+              style={{ fontSize: 13, padding: '7px 18px', borderRadius: 8, border: 'none', background: seleccionados === 0 ? '#E8E8E4' : '#EA6C00', color: seleccionados === 0 ? '#999' : '#fff', cursor: seleccionados === 0 ? 'default' : 'pointer', fontWeight: 700 }}>
+              {enviando ? 'Enviando...' : `📲 Enviar a ${seleccionados} seleccionados`}
+            </button>
+          </div>
         </div>
       </div>
 
