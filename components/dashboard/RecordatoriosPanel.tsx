@@ -51,7 +51,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
         diasDesdeWhatsapp = Math.floor((hoy.getTime() - fechaWsp.getTime()) / (1000 * 60 * 60 * 24))
       }
 
-      if (dias >= ciclo - 3 && dias <= ciclo + 2) {
+      if (dias >= ciclo - 3) {
         alertas.push({
           id: c.id,
           nombre: c.nombre,
