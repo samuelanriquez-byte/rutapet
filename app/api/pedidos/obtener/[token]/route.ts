@@ -16,7 +16,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ toke
   const [{ data: cliente }, { data: mascotas }, { data: negocio }] = await Promise.all([
     supabase.from('clientes').select('*').eq('id', pedido.cliente_id).single(),
     supabase.from('mascotas').select('*').eq('cliente_id', pedido.cliente_id),
-    supabase.from('negocios').select('id, nombre, whatsapp, metodos_pago, marcas_alimento').eq('id', pedido.negocio_id).single(),
+    supabase.from('negocios').select('id, nombre, whatsapp, metodos_pago, marcas_alimento, alias_mercadopago, telefono_comprobantes').eq('id', pedido.negocio_id).single(),
   ])
 
   return NextResponse.json({ pedido, cliente, mascotas, negocio })
