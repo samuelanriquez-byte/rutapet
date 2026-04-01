@@ -150,9 +150,12 @@ export default function PedidosPanel({ negocio }: any) {
                     </button>
                   )}
                   {p.estado === 'pendiente' && (
-                    <button onClick={() => reenviarWhatsApp(p.id)}
-                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0', cursor: 'pointer', fontWeight: 600 }}>
-                      Reenviar
+                    <button onClick={() => {
+                      const supabase = createClient()
+                      supabase.from('pedidos').update({ estado: 'entregado' }).eq('id', p.id).then(() => cargar())
+                    }}
+                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#EA6C00', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
+                      ✓ Entregado
                     </button>
                   )}
                   <button onClick={() => eliminarPedido(p.id)}
