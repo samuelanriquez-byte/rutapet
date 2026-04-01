@@ -28,6 +28,8 @@ export default function ConfiguracionPanel({ negocio }: any) {
     marcas_alimento: negocio.marcas_alimento || [],
     mensaje_whatsapp: negocio.mensaje_whatsapp || MENSAJE_DEFAULT,
     promocion_whatsapp: negocio.promocion_whatsapp || '',
+    alias_mercadopago: negocio.alias_mercadopago || '',
+    telefono_comprobantes: negocio.telefono_comprobantes || '',
   })
   const [vistaPrevia, setVistaPrevia] = useState(false)
   const [nuevaMarca, setNuevaMarca] = useState('')
@@ -114,7 +116,7 @@ export default function ConfiguracionPanel({ negocio }: any) {
       <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 24 }}>
         <h2 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>💳 Métodos de pago</h2>
         <p style={{ fontSize: 12, color: '#888', marginBottom: 16 }}>Los clientes van a poder elegir entre estos al confirmar su pedido.</p>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
           {METODOS_PAGO_OPCIONES.map(m => (
             <button key={m} onClick={() => toggleMetodoPago(m)}
               style={{ padding: '7px 16px', borderRadius: 8, border: `2px solid ${form.metodos_pago.includes(m) ? '#EA6C00' : '#E8E8E4'}`, background: form.metodos_pago.includes(m) ? '#FFF7ED' : '#fff', color: form.metodos_pago.includes(m) ? '#EA6C00' : '#444', fontWeight: form.metodos_pago.includes(m) ? 700 : 400, fontSize: 13, cursor: 'pointer' }}>
@@ -122,6 +124,26 @@ export default function ConfiguracionPanel({ negocio }: any) {
             </button>
           ))}
         </div>
+
+        {form.metodos_pago.includes('mercado pago') && (
+          <div style={{ background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <p style={{ fontSize: 12, fontWeight: 700, color: '#0369A1', margin: 0 }}>💳 Datos de Mercado Pago — los verá el cliente al confirmar el pedido</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Alias de MP</label>
+                <input value={form.alias_mercadopago} onChange={e => setForm(p => ({ ...p, alias_mercadopago: e.target.value }))}
+                  placeholder="Ej: miforrajeria.mp"
+                  style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #BAE6FD', fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>Teléfono para comprobantes</label>
+                <input value={form.telefono_comprobantes} onChange={e => setForm(p => ({ ...p, telefono_comprobantes: e.target.value }))}
+                  placeholder="Ej: 11 1234-5678"
+                  style={{ width: '100%', padding: '9px 12px', borderRadius: 8, border: '1px solid #BAE6FD', fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Días anticipación */}

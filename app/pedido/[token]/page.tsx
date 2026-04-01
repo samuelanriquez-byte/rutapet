@@ -84,12 +84,32 @@ export default function PedidoPage() {
 
   if (estado === 'ok') return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFF8F0', padding: 24 }}>
-      <div style={{ textAlign: 'center', maxWidth: 400 }}>
+      <div style={{ textAlign: 'center', maxWidth: 400, width: '100%' }}>
         <div style={{ fontSize: 64, marginBottom: 16 }}>✅</div>
         <h1 style={{ fontSize: 24, fontWeight: 800, color: '#111', marginBottom: 8 }}>¡Pedido confirmado!</h1>
-        <p style={{ color: '#666', fontSize: 15, lineHeight: 1.6 }}>
+        <p style={{ color: '#666', fontSize: 15, lineHeight: 1.6, marginBottom: 24 }}>
           Te llevamos el alimento el <strong>{fechaFormateada}</strong>. ¡Gracias por tu confianza! 🐾
         </p>
+        {negocio?.alias_mercadopago && (
+          <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8E8E4', padding: 20, textAlign: 'left' }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: '#111', marginBottom: 12 }}>💳 Podés pagar antes de la entrega</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <div style={{ background: '#F0F9FF', borderRadius: 10, padding: '10px 14px' }}>
+                <p style={{ fontSize: 11, color: '#0369A1', fontWeight: 700, margin: '0 0 2px' }}>ALIAS MERCADO PAGO</p>
+                <p style={{ fontSize: 16, fontWeight: 800, color: '#111', margin: 0 }}>{negocio.alias_mercadopago}</p>
+              </div>
+              {negocio.telefono_comprobantes && (
+                <div style={{ background: '#F0FDF4', borderRadius: 10, padding: '10px 14px' }}>
+                  <p style={{ fontSize: 11, color: '#166534', fontWeight: 700, margin: '0 0 2px' }}>ENVIÁ EL COMPROBANTE AL</p>
+                  <a href={`https://wa.me/549${negocio.telefono_comprobantes.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 16, fontWeight: 800, color: '#16A34A', textDecoration: 'none' }}>
+                    📲 {negocio.telefono_comprobantes}
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
