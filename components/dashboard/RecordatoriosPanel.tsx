@@ -11,6 +11,7 @@ type ClienteAlerta = {
   ciclo_dias: number
   mascotas: { nombre: string; marca_alimento: string; kilos: number }[]
   seleccionado: boolean
+  diasDesdeWhatsapp: number | null
 }
 
 export default function RecordatoriosPanel({ negocio }: any) {
@@ -44,6 +45,12 @@ export default function RecordatoriosPanel({ negocio }: any) {
       const dias = Math.floor((hoy.getTime() - ultimaFecha.getTime()) / (1000 * 60 * 60 * 24))
       const ciclo = c.ciclo_dias || 30
       // Mostrar si está entre (ciclo - 3) y (ciclo + 2) días
+      let diasDesdeWhatsapp: number | null = null
+      if (c.ultimo_whatsapp_fecha) {
+        const fechaWsp = new Date(c.ultimo_whatsapp_fecha)
+        diasDesdeWhatsapp = Math.floor((hoy.getTime() - fechaWsp.getTime()) / (1000 * 60 * 60 * 24))
+      }
+
       if (dias >= ciclo - 3 && dias <= ciclo + 2) {
         alertas.push({
           id: c.id,
@@ -53,7 +60,8 @@ export default function RecordatoriosPanel({ negocio }: any) {
           diasDesdeUltimo: dias,
           ciclo_dias: ciclo,
           mascotas: c.mascotas || [],
-          seleccionado: true,
+          seleccionado: diasDesdeWhatsapp === null || diasDesdeWhatsapp >= 7,
+          diasDesdeWhatsapp,
         })
       }
     }
@@ -74,7 +82,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
   }
 
   function seleccionarTodos() {
-    setClientes(prev => prev.map(c => ({ ...c, seleccionado: true })))
+    setClientes(prev => prev.map(c => ({ ...c, seleccionado: c.diasDesdeWhatsapp === null || c.diasDesdeWhatsapp >= 7 })))
     setFiltroLocalidad('todas')
   }
 
@@ -164,21 +172,29 @@ export default function RecordatoriosPanel({ negocio }: any) {
         <div>
           {visibles.map(c => {
             const diasRestantes = c.ciclo_dias - c.diasDesdeUltimo
+            const bloqueado = c.diasDesdeWhatsapp !== null && c.diasDesdeWhatsapp < 7
+            const advertencia = c.diasDesdeWhatsapp !== null && c.diasDesdeWhatsapp >= 5 && c.diasDesdeWhatsapp < 7
             return (
-              <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 24px', borderBottom: '1px solid #F3F3F0', background: c.seleccionado ? '#FFF7ED' : '#fff', cursor: 'pointer' }}
-                onClick={() => toggleSeleccion(c.id)}>
+              <div key={c.id}
+                style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 24px', borderBottom: '1px solid #F3F3F0', background: bloqueado ? '#F9F9F9' : c.seleccionado ? '#FFF7ED' : '#fff', cursor: bloqueado ? 'default' : 'pointer', opacity: bloqueado ? 0.6 : 1 }}
+                onClick={() => !bloqueado && toggleSeleccion(c.id)}>
                 {/* Checkbox */}
-                <div style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${c.seleccionado ? '#EA6C00' : '#CCC'}`, background: c.seleccionado ? '#EA6C00' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  {c.seleccionado && <span style={{ color: '#fff', fontSize: 12 }}>✓</span>}
+                <div style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${bloqueado ? '#DDD' : c.seleccionado ? '#EA6C00' : '#CCC'}`, background: bloqueado ? '#EEE' : c.seleccionado ? '#EA6C00' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {c.seleccionado && !bloqueado && <span style={{ color: '#fff', fontSize: 12 }}>✓</span>}
                 </div>
                 {/* Info */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontWeight: 700, fontSize: 14, color: '#111' }}>{c.nombre}</span>
+                    <span style={{ fontWeight: 700, fontSize: 14, color: bloqueado ? '#999' : '#111' }}>{c.nombre}</span>
                     {c.localidad && <span style={{ fontSize: 11, color: '#888', background: '#F3F3F0', padding: '2px 7px', borderRadius: 99 }}>📍 {c.localidad}</span>}
                     <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: diasRestantes <= 0 ? '#FEE2E2' : '#FEF9C3', color: diasRestantes <= 0 ? '#DC2626' : '#854D0E' }}>
                       {diasRestantes <= 0 ? `Venció hace ${Math.abs(diasRestantes)} días` : `Vence en ${diasRestantes} días`}
                     </span>
+                    {bloqueado && (
+                      <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: advertencia ? '#FEF9C3' : '#FEE2E2', color: advertencia ? '#854D0E' : '#DC2626' }}>
+                        🚫 Mensaje enviado hace {c.diasDesdeWhatsapp} día{c.diasDesdeWhatsapp !== 1 ? 's' : ''}
+                      </span>
+                    )}
                   </div>
                   <div style={{ fontSize: 12, color: '#888', marginTop: 3 }}>
                     {c.mascotas.map(m => `${m.nombre} — ${m.marca_alimento} ${m.kilos}kg`).join(' · ')}

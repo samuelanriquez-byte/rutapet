@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
         }
 
         await sendWhatsApp(cliente.telefono, mensaje)
+        await supabase.from('clientes').update({ ultimo_whatsapp_fecha: new Date().toISOString() }).eq('id', clienteId)
         enviados++
       } catch (err) {
         console.error(`Error enviando a cliente ${clienteId}:`, err)
