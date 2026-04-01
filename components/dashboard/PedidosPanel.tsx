@@ -119,7 +119,7 @@ export default function PedidosPanel({ negocio }: any) {
                     📍 {cliente?.direccion || '—'}{cliente?.localidad ? `, ${cliente.localidad}` : ''}
                   </div>
                   {cliente?.observacion_domicilio && (
-                    <div style={{ fontSize: 11, color: '#F59E0B', marginBottom: 2 }}>⚠️ {cliente.observacion_domicilio}</div>
+                    <div style={{ fontSize: 11, color: '#F59E0B', marginBottom: 2 }}>🏠 {cliente.observacion_domicilio}</div>
                   )}
                   <div style={{ fontSize: 12, color: '#444', marginTop: 4 }}>
                     {mascotas.map((m: any) => {

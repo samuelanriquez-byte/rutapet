@@ -22,6 +22,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
   const [filtroLocalidad, setFiltroLocalidad] = useState('todas')
   const [localidades, setLocalidades] = useState<string[]>([])
   const [diasEntrega, setDiasEntrega] = useState(1)
+  const [modalEnvio, setModalEnvio] = useState(false)
 
   useEffect(() => { cargar() }, [negocio])
 
@@ -133,38 +134,23 @@ export default function RecordatoriosPanel({ negocio }: any) {
         </div>
 
         {/* Acciones */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-            <span style={{ fontSize: 12, color: '#888', fontWeight: 600 }}>Entrega:</span>
-            {[
-              { d: 1, label: 'Mañana' },
-              { d: 2, label: 'En 2 días' },
-              { d: 3, label: 'En 3 días' },
-            ].map(({ d, label }) => (
-              <button key={d} onClick={() => setDiasEntrega(d)}
-                style={{ fontSize: 13, padding: '6px 12px', borderRadius: 8, border: `1px solid ${diasEntrega === d ? '#EA6C00' : '#E8E8E4'}`, background: diasEntrega === d ? '#FFF7ED' : '#fff', color: diasEntrega === d ? '#EA6C00' : '#444', fontWeight: diasEntrega === d ? 700 : 400, cursor: 'pointer' }}>
-                {label}
-              </button>
-            ))}
-          </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button onClick={seleccionarTodos}
-              style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: '#444' }}>
-              Seleccionar todos
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <button onClick={seleccionarTodos}
+            style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: '#444' }}>
+            Seleccionar todos
+          </button>
+          {localidades.map(loc => (
+            <button key={loc} onClick={() => seleccionarPorLocalidad(loc)}
+              style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: filtroLocalidad === loc ? '#FFF7ED' : '#fff', cursor: 'pointer', color: filtroLocalidad === loc ? '#EA6C00' : '#444', fontWeight: filtroLocalidad === loc ? 700 : 400 }}>
+              📍 {loc}
             </button>
-            {localidades.map(loc => (
-              <button key={loc} onClick={() => seleccionarPorLocalidad(loc)}
-                style={{ fontSize: 13, padding: '7px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: filtroLocalidad === loc ? '#FFF7ED' : '#fff', cursor: 'pointer', color: filtroLocalidad === loc ? '#EA6C00' : '#444', fontWeight: filtroLocalidad === loc ? 700 : 400 }}>
-                📍 {loc}
-              </button>
-            ))}
-            <button
-              onClick={enviarWhatsApps}
-              disabled={enviando || seleccionados === 0}
-              style={{ fontSize: 13, padding: '7px 18px', borderRadius: 8, border: 'none', background: seleccionados === 0 ? '#E8E8E4' : '#EA6C00', color: seleccionados === 0 ? '#999' : '#fff', cursor: seleccionados === 0 ? 'default' : 'pointer', fontWeight: 700 }}>
-              {enviando ? 'Enviando...' : `📲 Enviar a ${seleccionados} seleccionados`}
-            </button>
-          </div>
+          ))}
+          <button
+            onClick={() => seleccionados > 0 && setModalEnvio(true)}
+            disabled={seleccionados === 0}
+            style={{ fontSize: 13, padding: '7px 18px', borderRadius: 8, border: 'none', background: seleccionados === 0 ? '#E8E8E4' : '#EA6C00', color: seleccionados === 0 ? '#999' : '#fff', cursor: seleccionados === 0 ? 'default' : 'pointer', fontWeight: 700 }}>
+            📲 Enviar a {seleccionados} seleccionados
+          </button>
         </div>
       </div>
 
@@ -222,6 +208,43 @@ export default function RecordatoriosPanel({ negocio }: any) {
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Modal fecha de entrega */}
+      {modalEnvio && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16 }}>
+          <div style={{ background: '#fff', borderRadius: 20, padding: 32, width: '100%', maxWidth: 400 }}>
+            <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 8 }}>📅 ¿Cuándo entregás?</h2>
+            <p style={{ fontSize: 13, color: '#888', marginBottom: 24 }}>El cliente verá esta fecha en el mensaje de WhatsApp.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+              {[
+                { d: 1, label: 'Mañana' },
+                { d: 2, label: 'En 2 días' },
+                { d: 3, label: 'En 3 días' },
+              ].map(({ d, label }) => {
+                const fecha = new Date()
+                fecha.setDate(fecha.getDate() + d)
+                const fechaStr = fecha.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
+                return (
+                  <button key={d} onClick={() => setDiasEntrega(d)}
+                    style={{ padding: '12px 16px', borderRadius: 10, border: `2px solid ${diasEntrega === d ? '#EA6C00' : '#E8E8E4'}`, background: diasEntrega === d ? '#FFF7ED' : '#fff', color: diasEntrega === d ? '#EA6C00' : '#444', fontWeight: diasEntrega === d ? 700 : 400, fontSize: 14, cursor: 'pointer', textAlign: 'left' }}>
+                    <span style={{ fontWeight: 700 }}>{label}</span> — {fechaStr}
+                  </button>
+                )
+              })}
+            </div>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setModalEnvio(false)}
+                style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #E8E8E4', background: '#fff', fontSize: 14, cursor: 'pointer', color: '#666' }}>
+                Cancelar
+              </button>
+              <button onClick={() => { setModalEnvio(false); enviarWhatsApps() }} disabled={enviando}
+                style={{ flex: 2, padding: '12px', borderRadius: 10, border: 'none', background: '#EA6C00', color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                {enviando ? 'Enviando...' : `📲 Confirmar y enviar`}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
