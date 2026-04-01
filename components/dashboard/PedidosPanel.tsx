@@ -139,10 +139,14 @@ export default function PedidosPanel({ negocio }: any) {
                     style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#FFF7ED', color: '#EA6C00', textDecoration: 'none', border: '1px solid #FED7AA', fontWeight: 600 }}>
                     WhatsApp
                   </a>
-                  {p.estado === 'confirmado' && (
-                    <button onClick={() => marcarEntregado(p.id)}
-                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#EA6C00', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
-                      ✓ Entregado
+                  {(p.estado === 'confirmado' || p.estado === 'entregado') && (
+                    <button onClick={() => {
+                      const supabase = createClient()
+                      const nuevoEstado = p.estado === 'entregado' ? 'confirmado' : 'entregado'
+                      supabase.from('pedidos').update({ estado: nuevoEstado }).eq('id', p.id).then(() => cargar())
+                    }}
+                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: p.estado === 'entregado' ? '#F3F4F6' : '#EA6C00', color: p.estado === 'entregado' ? '#374151' : '#fff', border: p.estado === 'entregado' ? '1px solid #E8E8E4' : 'none', cursor: 'pointer', fontWeight: 600 }}>
+                      {p.estado === 'entregado' ? '↩ Pendiente' : '✓ Entregado'}
                     </button>
                   )}
                   {p.estado === 'pendiente' && (
