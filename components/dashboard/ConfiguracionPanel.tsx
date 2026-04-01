@@ -4,13 +4,9 @@ import { createClient } from '@/lib/supabase/client'
 
 const METODOS_PAGO_OPCIONES = ['efectivo', 'transferencia', 'débito', 'crédito', 'mercado pago']
 
-const MENSAJE_DEFAULT = `¡Hola {nombre}! 👋
+const MENSAJE_DEFAULT = `¡Hola {nombre}! 👋 Te escribo de *{negocio}*
 
-Te recordamos que a tu mascota le está por terminar el alimento:
-
-{mascotas}
-
-*{negocio}* estará repartiendo el *{fecha}* por tu zona.
+Si a {mascotas} les queda poco alimento, vamos a estar repartiendo el *{fecha}* por tu zona.
 
 Confirmá tu pedido acá 👇
 {link}
