@@ -12,18 +12,23 @@ const ESTADO_COLOR: Record<string, { bg: string; color: string; label: string }>
 export default function PedidosPanel({ negocio }: any) {
   const [pedidos, setPedidos] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0])
+  const [diasVista, setDiasVista] = useState(7)
 
-  useEffect(() => { cargar() }, [negocio, fecha])
+  useEffect(() => { cargar() }, [negocio, diasVista])
 
   async function cargar() {
     const supabase = createClient()
+    const hoy = new Date().toISOString().split('T')[0]
+    const hasta = new Date()
+    hasta.setDate(hasta.getDate() + diasVista)
+    const fechaHasta = hasta.toISOString().split('T')[0]
     const { data } = await supabase
       .from('pedidos')
       .select('*, clientes(nombre, telefono, localidad, direccion, observacion_domicilio), mascotas:clientes(mascotas(*))')
       .eq('negocio_id', negocio.id)
-      .eq('fecha_entrega', fecha)
-      .order('created_at', { ascending: true })
+      .gte('fecha_entrega', hoy)
+      .lte('fecha_entrega', fechaHasta)
+      .order('fecha_entrega', { ascending: true })
     setPedidos(data || [])
     setLoading(false)
   }
@@ -62,17 +67,23 @@ export default function PedidosPanel({ negocio }: any) {
       <div style={{ padding: '20px 24px', borderBottom: '1px solid #E8E8E4', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: '#111' }}>
-            🚚 Pedidos del día
+            🚚 Próximos pedidos
             {confirmados > 0 && (
               <span style={{ marginLeft: 8, background: '#FEF3C7', color: '#92400E', fontSize: 12, fontWeight: 700, padding: '2px 8px', borderRadius: 99 }}>
                 {confirmados} confirmados
               </span>
             )}
           </h2>
-          <p style={{ color: '#888', fontSize: 13, marginTop: 2 }}>Pedidos a entregar y su estado</p>
+          <p style={{ color: '#888', fontSize: 13, marginTop: 2 }}>Pedidos confirmados por los clientes</p>
         </div>
-        <input type="date" value={fecha} onChange={e => setFecha(e.target.value)}
-          style={{ fontSize: 13, padding: '7px 12px', borderRadius: 8, border: '1px solid #E8E8E4', color: '#444', outline: 'none' }} />
+        <div style={{ display: 'flex', gap: 8 }}>
+          {[3, 7, 15].map(d => (
+            <button key={d} onClick={() => setDiasVista(d)}
+              style={{ fontSize: 13, padding: '7px 12px', borderRadius: 8, border: `1px solid ${diasVista === d ? '#EA6C00' : '#E8E8E4'}`, background: diasVista === d ? '#FFF7ED' : '#fff', color: diasVista === d ? '#EA6C00' : '#444', fontWeight: diasVista === d ? 700 : 400, cursor: 'pointer' }}>
+              {d} días
+            </button>
+          ))}
+        </div>
       </div>
 
       {loading ? (
@@ -92,6 +103,9 @@ export default function PedidosPanel({ negocio }: any) {
             return (
               <div key={p.id} style={{ padding: '16px 24px', borderBottom: '1px solid #F3F3F0', display: 'flex', alignItems: 'flex-start', gap: 16 }}>
                 <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 11, color: '#EA6C00', fontWeight: 700, marginBottom: 4 }}>
+                    📅 {new Date(p.fecha_entrega + 'T00:00:00').toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
                     <span style={{ fontWeight: 700, fontSize: 14, color: '#111' }}>{cliente?.nombre}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: est.bg, color: est.color }}>{est.label}</span>
