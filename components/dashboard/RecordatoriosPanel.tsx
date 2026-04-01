@@ -41,7 +41,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
     const alertas: ClienteAlerta[] = []
     for (const c of clientesDB) {
       if (!c.ultimo_pedido_fecha) continue
-      const ultimaFecha = new Date(c.ultimo_pedido_fecha + 'T00:00:00')
+      const ultimaFecha = new Date(c.ultimo_pedido_fecha)
       const dias = Math.floor((hoy.getTime() - ultimaFecha.getTime()) / (1000 * 60 * 60 * 24))
       const ciclo = c.ciclo_dias || 30
       // Mostrar si está entre (ciclo - 3) y (ciclo + 2) días
