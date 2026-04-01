@@ -34,6 +34,20 @@ export default function PedidosPanel({ negocio }: any) {
     await cargar()
   }
 
+  async function togglePago(pedidoId: string, estadoActual: string) {
+    const supabase = createClient()
+    await supabase.from('pedidos').update({ estado_pago: estadoActual === 'abonado' ? 'pendiente' : 'abonado' }).eq('id', pedidoId)
+    await cargar()
+  }
+
+  async function reenviarWhatsApp(pedidoId: string) {
+    await fetch('/api/whatsapp/reenviar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pedidoId }),
+    })
+  }
+
   async function eliminarPedido(pedidoId: string) {
     if (!confirm('¿Eliminar este pedido?')) return
     const supabase = createClient()
@@ -81,6 +95,10 @@ export default function PedidosPanel({ negocio }: any) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
                     <span style={{ fontWeight: 700, fontSize: 14, color: '#111' }}>{cliente?.nombre}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: est.bg, color: est.color }}>{est.label}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: p.estado_pago === 'abonado' ? '#F0FDF4' : '#FEF9C3', color: p.estado_pago === 'abonado' ? '#16A34A' : '#854D0E', cursor: 'pointer' }}
+                      onClick={() => togglePago(p.id, p.estado_pago)}>
+                      {p.estado_pago === 'abonado' ? '✅ Abonado' : '⏳ Sin pagar'}
+                    </span>
                     {p.modificado && <span style={{ fontSize: 11, background: '#FEF3C7', color: '#92400E', padding: '2px 7px', borderRadius: 99 }}>⚠️ Modificado</span>}
                   </div>
                   <div style={{ fontSize: 12, color: '#666', marginBottom: 2 }}>
@@ -111,6 +129,12 @@ export default function PedidosPanel({ negocio }: any) {
                     <button onClick={() => marcarEntregado(p.id)}
                       style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#EA6C00', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
                       ✓ Entregado
+                    </button>
+                  )}
+                  {p.estado === 'pendiente' && (
+                    <button onClick={() => reenviarWhatsApp(p.id)}
+                      style={{ fontSize: 12, padding: '5px 10px', borderRadius: 7, background: '#F0FDF4', color: '#16A34A', border: '1px solid #BBF7D0', cursor: 'pointer', fontWeight: 600 }}>
+                      Reenviar
                     </button>
                   )}
                   <button onClick={() => eliminarPedido(p.id)}
