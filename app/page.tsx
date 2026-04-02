@@ -84,7 +84,7 @@ export default function LandingPage() {
             <ul style={{ textAlign: 'left', listStyle: 'none', marginBottom: 36 }}>
               {[
                 'Recordatorio automático de ventas',
-                'Clientes y mascotas ilimitados',
+                'Registro de clientes ilimitados',
                 'WhatsApp automático incluido',
                 '200 mensajes a clientes por mes',
                 '45 días de prueba gratis',
