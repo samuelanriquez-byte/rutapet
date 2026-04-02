@@ -62,20 +62,44 @@ export default function LandingPage() {
       <section style={{ maxWidth: 480, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 32, fontWeight: 800, marginBottom: 12, letterSpacing: -1 }}>Un solo precio, todo incluido</h2>
         <p style={{ color: '#666', marginBottom: 48, fontSize: 16 }}>Sin sorpresas. Sin límite de clientes.</p>
-        <div style={{ background: '#fff', border: '2px solid #FDDCB5', borderRadius: 20, padding: 40, boxShadow: '0 4px 24px rgba(234,108,0,0.08)' }}>
-          <div style={{ fontSize: 13, color: '#EA6C00', fontWeight: 700, marginBottom: 8, letterSpacing: 1 }}>PRECIO MENSUAL</div>
-          <div style={{ fontSize: 52, fontWeight: 900, color: '#EA6C00', letterSpacing: -2, lineHeight: 1 }}>$29.900</div>
-          <div style={{ color: '#888', marginBottom: 32, fontSize: 14, marginTop: 8 }}>ARS / mes · Clientes ilimitados · WhatsApp incluido</div>
+        <div style={{ background: '#fff', border: '2px solid #FDDCB5', borderRadius: 20, padding: 40, boxShadow: '0 4px 24px rgba(234,108,0,0.08)', position: 'relative', overflow: 'hidden' }}>
+
+          {/* Badge oferta */}
+          <div style={{ position: 'absolute', top: 20, right: -28, background: '#EA6C00', color: '#fff', fontSize: 11, fontWeight: 800, padding: '6px 40px', transform: 'rotate(45deg)', letterSpacing: 1 }}>
+            OFERTA
+          </div>
+
+          <div style={{ fontSize: 13, color: '#EA6C00', fontWeight: 700, marginBottom: 8, letterSpacing: 1 }}>PRECIO ESPECIAL · PERÍODO DE PRUEBA</div>
+
+          {/* Precio tachado */}
+          <div style={{ fontSize: 20, color: '#BBB', textDecoration: 'line-through', fontWeight: 600, marginBottom: 4 }}>$49.900 ARS/mes</div>
+
+          {/* Precio actual */}
+          <div style={{ fontSize: 56, fontWeight: 900, color: '#EA6C00', letterSpacing: -2, lineHeight: 1 }}>$29.900</div>
+          <div style={{ color: '#888', marginBottom: 8, fontSize: 14, marginTop: 6 }}>ARS / mes · Todo incluido</div>
+          <div style={{ fontSize: 12, color: '#16A34A', fontWeight: 700, marginBottom: 32, background: '#F0FDF4', display: 'inline-block', padding: '4px 12px', borderRadius: 99 }}>
+            💰 Ahorrás $20.000 ARS por mes
+          </div>
+
           <ul style={{ textAlign: 'left', listStyle: 'none', marginBottom: 36 }}>
-            {['Clientes y mascotas ilimitados', 'WhatsApp automático incluido', 'Pedidos organizados por día', 'Filtro por localidad', '45 días de prueba gratis'].map(f => (
+            {[
+              'Recordatorio de tus ventas',
+              'Registro ilimitado de clientes y mascotas',
+              'WhatsApp automático incluido',
+              '45 días de prueba gratis',
+              'Precio congelado hasta dic 2026',
+              '200 mensajes a clientes por mes',
+            ].map(f => (
               <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, fontSize: 14, color: '#333' }}>
                 <span style={{ color: '#EA6C00', fontWeight: 700 }}>✓</span> {f}
               </li>
             ))}
           </ul>
+
           <Link href="/register" style={{ display: 'block', background: '#EA6C00', color: '#fff', textDecoration: 'none', fontWeight: 700, padding: '14px 0', borderRadius: 10, fontSize: 15 }}>
             Empezar ahora →
           </Link>
+          <p style={{ fontSize: 12, color: '#AAA', marginTop: 12 }}>Este precio es exclusivo para quienes se registren durante el período de prueba.</p>
         </div>
       </section>
 
@@ -85,7 +109,7 @@ export default function LandingPage() {
         {[
           {
             q: '¿Cuánto cuesta RutaPet?',
-            a: '$29.900 ARS por mes. Un solo plan, todo incluido. Sin costos por mensaje ni por cantidad de clientes.'
+            a: 'El precio regular es $49.900 ARS/mes. Si contratás durante el período de prueba, el precio queda congelado en $29.900 ARS/mes hasta diciembre 2026.'
           },
           {
             q: '¿Hay período de prueba?',
