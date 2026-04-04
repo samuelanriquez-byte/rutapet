@@ -12,7 +12,7 @@ const ESTADO_COLOR: Record<string, { bg: string; color: string; label: string }>
 export default function PedidosPanel({ negocio }: any) {
   const [pedidos, setPedidos] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [diasVista, setDiasVista] = useState(7)
+  const [diasVista, setDiasVista] = useState(2)
 
   useEffect(() => { cargar() }, [negocio, diasVista])
 
@@ -77,7 +77,7 @@ export default function PedidosPanel({ negocio }: any) {
           <p style={{ color: '#888', fontSize: 13, marginTop: 2 }}>Pedidos confirmados por los clientes</p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          {[3, 7, 15].map(d => (
+          {[1, 2, 3, 5].map(d => (
             <button key={d} onClick={() => setDiasVista(d)}
               style={{ fontSize: 13, padding: '7px 12px', borderRadius: 8, border: `1px solid ${diasVista === d ? '#EA6C00' : '#E8E8E4'}`, background: diasVista === d ? '#FFF7ED' : '#fff', color: diasVista === d ? '#EA6C00' : '#444', fontWeight: diasVista === d ? 700 : 400, cursor: 'pointer' }}>
               {d} días
