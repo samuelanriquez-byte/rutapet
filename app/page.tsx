@@ -142,6 +142,10 @@ export default function LandingPage() {
       {/* Footer */}
       <footer style={{ borderTop: '1px solid #F0EDE8', padding: '32px 40px', textAlign: 'center', color: '#BBB', fontSize: 13 }}>
         © 2026 RutaPet · Hecho en Argentina 🇦🇷
+        <span style={{ margin: '0 12px' }}>·</span>
+        <a href="https://wa.me/541127130451" target="_blank" rel="noopener noreferrer" style={{ color: '#EA6C00', textDecoration: 'none', fontWeight: 600 }}>
+          💬 Soporte por WhatsApp
+        </a>
       </footer>
     </main>
   )
