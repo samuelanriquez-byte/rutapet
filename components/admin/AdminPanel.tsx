@@ -7,6 +7,25 @@ export default function AdminPanel({ negocios }: { negocios: any[] }) {
   const [negocioDetalle, setNegocioDetalle] = useState<any>(null)
   const [extendiendo, setExtendiendo] = useState(false)
   const [msg, setMsg] = useState('')
+  const [tab, setTab] = useState<'gestionar' | 'clientes' | 'config' | 'pedidos'>('gestionar')
+  const [detalleData, setDetalleData] = useState<any>(null)
+  const [cargandoDetalle, setCargandoDetalle] = useState(false)
+
+  async function abrirDetalle(n: any) {
+    setNegocioDetalle(n)
+    setTab('gestionar')
+    setDetalleData(null)
+  }
+
+  async function cargarTab(tabNuevo: 'clientes' | 'config' | 'pedidos') {
+    setTab(tabNuevo)
+    if (detalleData) return // ya cargado
+    setCargandoDetalle(true)
+    const res = await fetch(`/api/admin/negocio-detalle?id=${negocioDetalle.id}`)
+    const data = await res.json()
+    setDetalleData(data)
+    setCargandoDetalle(false)
+  }
 
   const ahora = new Date()
 
@@ -132,7 +151,7 @@ export default function AdminPanel({ negocios }: { negocios: any[] }) {
               </div>
               <div style={{ fontSize: 14, color: '#444' }}>{cantClientes}</div>
               <div style={{ fontSize: 14, color: '#444' }}>{cantPedidos}</div>
-              <button onClick={() => setNegocioDetalle(n)}
+              <button onClick={() => abrirDetalle(n)}
                 style={{ fontSize: 12, padding: '6px 14px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', cursor: 'pointer', color: '#444' }}>
                 Gestionar
               </button>
@@ -144,48 +163,160 @@ export default function AdminPanel({ negocios }: { negocios: any[] }) {
       {/* Modal gestionar */}
       {negocioDetalle && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 16 }}>
-          <div style={{ background: '#fff', borderRadius: 20, padding: 32, width: '100%', maxWidth: 480 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>{negocioDetalle.nombre}</h2>
-            <p style={{ fontSize: 13, color: '#888', marginBottom: 24 }}>{negocioDetalle.email}</p>
+          <div style={{ background: '#fff', borderRadius: 20, width: '100%', maxWidth: 560, maxHeight: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* Header */}
+            <div style={{ padding: '24px 28px 0' }}>
+              <h2 style={{ fontSize: 18, fontWeight: 800, marginBottom: 2 }}>{negocioDetalle.nombre}</h2>
+              <p style={{ fontSize: 13, color: '#888', marginBottom: 16 }}>{negocioDetalle.email}</p>
 
-              <div style={{ background: '#F7F7F5', borderRadius: 12, padding: 16 }}>
-                <p style={{ fontSize: 12, fontWeight: 700, color: '#555', marginBottom: 10 }}>EXTENDER TRIAL</p>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  {[7, 15, 30, 45].map(d => (
-                    <button key={d} onClick={() => extenderTrial(negocioDetalle.id, d)} disabled={extendiendo}
-                      style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>
-                      +{d}d
-                    </button>
+              {/* Tabs */}
+              <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid #E8E8E4' }}>
+                {([
+                  { key: 'gestionar', label: '⚙️ Gestionar' },
+                  { key: 'clientes', label: '👥 Clientes' },
+                  { key: 'pedidos', label: '📦 Pedidos' },
+                  { key: 'config', label: '🔧 Config' },
+                ] as const).map(t => (
+                  <button key={t.key}
+                    onClick={() => t.key === 'gestionar' ? setTab('gestionar') : cargarTab(t.key)}
+                    style={{ padding: '8px 16px', fontSize: 13, fontWeight: tab === t.key ? 700 : 400, color: tab === t.key ? '#EA6C00' : '#666', background: 'none', border: 'none', borderBottom: tab === t.key ? '2px solid #EA6C00' : '2px solid transparent', cursor: 'pointer', marginBottom: -1 }}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Contenido scrollable */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '20px 28px' }}>
+
+              {/* Tab: Gestionar */}
+              {tab === 'gestionar' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  <div style={{ background: '#F7F7F5', borderRadius: 12, padding: 16 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: '#555', marginBottom: 10 }}>EXTENDER TRIAL</p>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      {[7, 15, 30, 45].map(d => (
+                        <button key={d} onClick={() => extenderTrial(negocioDetalle.id, d)} disabled={extendiendo}
+                          style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', fontSize: 13, cursor: 'pointer', fontWeight: 600 }}>
+                          +{d}d
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ background: '#F7F7F5', borderRadius: 12, padding: 16 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: '#555', marginBottom: 10 }}>CAMBIAR PLAN</p>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={() => cambiarPlan(negocioDetalle.id, 'trial')}
+                        style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#FFF7ED', fontSize: 13, cursor: 'pointer', color: '#EA6C00', fontWeight: 600 }}>
+                        ⏳ Trial
+                      </button>
+                      <button onClick={() => cambiarPlan(negocioDetalle.id, 'monthly')}
+                        style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #BBF7D0', background: '#F0FDF4', fontSize: 13, cursor: 'pointer', color: '#16A34A', fontWeight: 600 }}>
+                        ✅ Pagando
+                      </button>
+                      <button onClick={() => cambiarPlan(negocioDetalle.id, 'gratis')}
+                        style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', fontSize: 13, cursor: 'pointer', color: '#666', fontWeight: 600 }}>
+                        🎁 Gratis
+                      </button>
+                    </div>
+                  </div>
+
+                  <button onClick={() => eliminarNegocio(negocioDetalle.id, negocioDetalle.nombre)}
+                    style={{ width: '100%', padding: '10px', borderRadius: 10, border: '1px solid #FCA5A5', background: '#FEF2F2', color: '#DC2626', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+                    🗑 Eliminar negocio y todos sus datos
+                  </button>
+                </div>
+              )}
+
+              {/* Tab: Clientes */}
+              {tab === 'clientes' && (
+                <div>
+                  {cargandoDetalle ? (
+                    <p style={{ color: '#888', fontSize: 14 }}>Cargando...</p>
+                  ) : detalleData?.clientes?.length === 0 ? (
+                    <p style={{ color: '#888', fontSize: 14 }}>Sin clientes cargados.</p>
+                  ) : detalleData?.clientes?.map((c: any) => (
+                    <div key={c.id} style={{ padding: '12px 0', borderBottom: '1px solid #F3F3F0' }}>
+                      <div style={{ fontWeight: 700, fontSize: 14 }}>{c.nombre}</div>
+                      <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{c.telefono} · {c.direccion}</div>
+                      {c.mascotas?.length > 0 && (
+                        <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                          {c.mascotas.map((m: any) => (
+                            <span key={m.id} style={{ fontSize: 11, background: '#FFF7ED', color: '#EA6C00', padding: '2px 8px', borderRadius: 99, fontWeight: 600 }}>
+                              🐾 {m.nombre} · {m.marca} · {m.kilos}kg / {m.ciclo_dias}d
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
-              </div>
+              )}
 
-              <div style={{ background: '#F7F7F5', borderRadius: 12, padding: 16 }}>
-                <p style={{ fontSize: 12, fontWeight: 700, color: '#555', marginBottom: 10 }}>CAMBIAR PLAN</p>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={() => cambiarPlan(negocioDetalle.id, 'trial')}
-                    style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#FFF7ED', fontSize: 13, cursor: 'pointer', color: '#EA6C00', fontWeight: 600 }}>
-                    ⏳ Trial
-                  </button>
-                  <button onClick={() => cambiarPlan(negocioDetalle.id, 'monthly')}
-                    style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #BBF7D0', background: '#F0FDF4', fontSize: 13, cursor: 'pointer', color: '#16A34A', fontWeight: 600 }}>
-                    ✅ Pagando
-                  </button>
-                  <button onClick={() => cambiarPlan(negocioDetalle.id, 'gratis')}
-                    style={{ flex: 1, padding: '8px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', fontSize: 13, cursor: 'pointer', color: '#666', fontWeight: 600 }}>
-                    🎁 Gratis
-                  </button>
+              {/* Tab: Pedidos */}
+              {tab === 'pedidos' && (
+                <div>
+                  {cargandoDetalle ? (
+                    <p style={{ color: '#888', fontSize: 14 }}>Cargando...</p>
+                  ) : detalleData?.pedidos?.length === 0 ? (
+                    <p style={{ color: '#888', fontSize: 14 }}>Sin pedidos registrados.</p>
+                  ) : detalleData?.pedidos?.map((p: any) => (
+                    <div key={p.id} style={{ padding: '12px 0', borderBottom: '1px solid #F3F3F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: 13 }}>{p.cliente_nombre || 'Cliente'}</div>
+                        <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{new Date(p.created_at).toLocaleDateString('es-AR')} · {p.metodo_pago || '—'}</div>
+                      </div>
+                      <span style={{ fontSize: 12, fontWeight: 700, padding: '3px 10px', borderRadius: 99, background: p.estado === 'confirmado' ? '#F0FDF4' : '#FFF7ED', color: p.estado === 'confirmado' ? '#16A34A' : '#EA6C00' }}>
+                        {p.estado}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              </div>
+              )}
 
-              <button onClick={() => eliminarNegocio(negocioDetalle.id, negocioDetalle.nombre)}
-                style={{ width: '100%', padding: '10px', borderRadius: 10, border: '1px solid #FCA5A5', background: '#FEF2F2', color: '#DC2626', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
-                🗑 Eliminar negocio y todos sus datos
-              </button>
+              {/* Tab: Config */}
+              {tab === 'config' && (
+                <div>
+                  {cargandoDetalle ? (
+                    <p style={{ color: '#888', fontSize: 14 }}>Cargando...</p>
+                  ) : detalleData?.negocio ? (() => {
+                    const n = detalleData.negocio
+                    return (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                        {[
+                          { label: 'Nombre', value: n.nombre },
+                          { label: 'Teléfono', value: n.telefono },
+                          { label: 'WhatsApp', value: n.whatsapp },
+                          { label: 'Dirección', value: n.direccion },
+                          { label: 'Días anticipación', value: n.dias_anticipacion },
+                          { label: 'Métodos de pago', value: n.metodos_pago?.join(', ') },
+                          { label: 'Plan', value: n.plan },
+                          { label: 'Trial vence', value: n.trial_ends_at ? new Date(n.trial_ends_at).toLocaleDateString('es-AR') : '—' },
+                        ].map(row => (
+                          <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #F3F3F0' }}>
+                            <span style={{ fontSize: 13, color: '#888' }}>{row.label}</span>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: '#111' }}>{row.value || '—'}</span>
+                          </div>
+                        ))}
+                        {n.mensaje_whatsapp && (
+                          <div style={{ background: '#F7F7F5', borderRadius: 10, padding: 12 }}>
+                            <p style={{ fontSize: 11, fontWeight: 700, color: '#888', marginBottom: 6 }}>MENSAJE WHATSAPP</p>
+                            <p style={{ fontSize: 13, color: '#333', whiteSpace: 'pre-wrap', margin: 0 }}>{n.mensaje_whatsapp}</p>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })() : null}
+                </div>
+              )}
 
-              <button onClick={() => setNegocioDetalle(null)}
+            </div>
+
+            {/* Footer */}
+            <div style={{ padding: '16px 28px', borderTop: '1px solid #E8E8E4' }}>
+              <button onClick={() => { setNegocioDetalle(null); setDetalleData(null) }}
                 style={{ width: '100%', padding: '10px', borderRadius: 10, border: '1px solid #E8E8E4', background: '#fff', color: '#666', fontSize: 14, cursor: 'pointer' }}>
                 Cerrar
               </button>
