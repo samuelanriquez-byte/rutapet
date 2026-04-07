@@ -2,37 +2,69 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+const items = [
+  { href: '/dashboard', icon: '🏠', label: 'Dashboard' },
+  { href: '/clientes', icon: '👥', label: 'Clientes' },
+  { href: '/configuracion', icon: '⚙️', label: 'Config' },
+]
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
-  const items = [
-    { href: '/dashboard', icon: '🏠', label: 'Dashboard' },
-    { href: '/clientes', icon: '👥', label: 'Clientes' },
-    { href: '/configuracion', icon: '⚙️', label: 'Configuración' },
-  ]
-
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#F7F7F5' }}>
-      <aside style={{ width: 220, background: '#fff', borderRight: '1px solid #E8E8E4', display: 'flex', flexDirection: 'column', padding: '24px 0' }}>
-        <div style={{ padding: '0 20px 24px', borderBottom: '1px solid #E8E8E4', marginBottom: 16 }}>
-          <span style={{ fontSize: 18, fontWeight: 800, color: '#EA6C00' }}>🐾 RutaPet</span>
+    <div className="min-h-screen bg-[#F7F7F5] flex flex-col md:flex-row">
+
+      {/* Sidebar — solo desktop */}
+      <aside className="hidden md:flex flex-col w-[220px] bg-white border-r border-[#E8E8E4] shrink-0">
+        <div className="px-5 py-6 border-b border-[#E8E8E4]">
+          <span className="text-lg font-extrabold text-[#EA6C00]">🐾 RutaPet</span>
         </div>
+        <nav className="flex flex-col mt-2">
+          {items.map(item => {
+            const activo = pathname === item.href
+            return (
+              <Link key={item.href} href={item.href} className="flex items-center gap-3 px-5 py-3 text-sm no-underline transition-colors"
+                style={{
+                  fontWeight: activo ? 700 : 500,
+                  color: activo ? '#EA6C00' : '#444',
+                  background: activo ? '#FFF7ED' : 'transparent',
+                  borderRight: activo ? '3px solid #EA6C00' : '3px solid transparent',
+                }}>
+                <span>{item.icon}</span> {item.label}
+              </Link>
+            )
+          })}
+        </nav>
+      </aside>
+
+      {/* Header mobile — solo mobile */}
+      <header className="md:hidden flex items-center px-4 py-3 bg-white border-b border-[#E8E8E4] sticky top-0 z-10">
+        <span className="text-base font-extrabold text-[#EA6C00]">🐾 RutaPet</span>
+      </header>
+
+      {/* Contenido principal */}
+      <main className="flex-1 overflow-y-auto pb-20 md:pb-0">
+        {children}
+      </main>
+
+      {/* Bottom nav — solo mobile */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#E8E8E4] flex z-10">
         {items.map(item => {
           const activo = pathname === item.href
           return (
-            <Link key={item.href} href={item.href} style={{
-              display: 'flex', alignItems: 'center', gap: 10, padding: '10px 20px',
-              fontSize: 14, textDecoration: 'none', fontWeight: activo ? 700 : 500,
-              color: activo ? '#EA6C00' : '#444',
-              background: activo ? '#FFF7ED' : 'transparent',
-              borderRight: activo ? '3px solid #EA6C00' : '3px solid transparent',
-            }}>
-              <span>{item.icon}</span> {item.label}
+            <Link key={item.href} href={item.href}
+              className="flex-1 flex flex-col items-center justify-center py-2 no-underline transition-colors gap-0.5"
+              style={{ color: activo ? '#EA6C00' : '#888' }}>
+              <span className="text-xl">{item.icon}</span>
+              <span className="text-[11px] font-semibold">{item.label}</span>
+              {activo && (
+                <span className="absolute bottom-0 w-8 h-0.5 bg-[#EA6C00] rounded-full" />
+              )}
             </Link>
           )
         })}
-      </aside>
-      <main style={{ flex: 1, overflowY: 'auto' }}>{children}</main>
+      </nav>
+
     </div>
   )
 }
