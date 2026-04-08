@@ -26,13 +26,41 @@ function formatPhone(phone: string): string {
   return `+549${digits}`
 }
 
-export async function sendWhatsApp(to: string, message: string): Promise<void> {
+export async function sendWhatsApp(
+  to: string,
+  message: string,
+  templateVars?: { nombre: string; negocio: string; mascota: string; mascotas: string; fecha: string; link: string }
+): Promise<void> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID
   const authToken = process.env.TWILIO_AUTH_TOKEN
   const from = process.env.TWILIO_WHATSAPP_NUMBER
+  const templateSid = process.env.TWILIO_TEMPLATE_SID
 
   if (!accountSid || !authToken || !from) {
     throw new Error('Twilio no configurado')
+  }
+
+  const isSandbox = from.includes('14155238886')
+
+  const params: Record<string, string> = {
+    From: from.startsWith('whatsapp:') ? from : `whatsapp:${from}`,
+    To: `whatsapp:${formatPhone(to)}`,
+  }
+
+  if (isSandbox || !templateSid || !templateVars) {
+    // Sandbox o sin plantilla: mensaje libre
+    params.Body = message
+  } else {
+    // Número propio: usar plantilla aprobada con variables
+    params.ContentSid = templateSid
+    params.ContentVariables = JSON.stringify({
+      '1': templateVars.nombre,
+      '2': templateVars.negocio,
+      '3': templateVars.mascota,
+      '4': templateVars.mascotas,
+      '5': templateVars.fecha,
+      '6': templateVars.link,
+    })
   }
 
   const res = await fetch(
@@ -43,11 +71,7 @@ export async function sendWhatsApp(to: string, message: string): Promise<void> {
         Authorization: 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64'),
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        From: from.startsWith('whatsapp:') ? from : `whatsapp:${from}`,
-        To: `whatsapp:${formatPhone(to)}`,
-        Body: message,
-      }).toString(),
+      body: new URLSearchParams(params).toString(),
     }
   )
 

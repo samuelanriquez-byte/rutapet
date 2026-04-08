@@ -59,7 +59,15 @@ export async function POST(req: NextRequest) {
           mensaje += `\n\n🎁 ${negocio.promocion_whatsapp}`
         }
 
-        await sendWhatsApp(cliente.telefono, mensaje)
+        const primeraMascota = (cliente.mascotas || [])[0]
+        await sendWhatsApp(cliente.telefono, mensaje, {
+          nombre: cliente.nombre,
+          negocio: negocio?.nombre || '',
+          mascota: primeraMascota?.nombre || '',
+          mascotas: mascotasTexto,
+          fecha: fechaFormateada,
+          link,
+        })
         const hoyLocal = new Date().toISOString().split('T')[0]
         await supabase.from('clientes').update({ ultimo_whatsapp_fecha: hoyLocal }).eq('id', clienteId)
         enviados++
