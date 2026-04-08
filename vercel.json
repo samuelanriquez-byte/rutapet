@@ -3,6 +3,14 @@
     {
       "path": "/api/cron/detectar-recordatorios",
       "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/email-noche",
+      "schedule": "30 1 * * *"
+    },
+    {
+      "path": "/api/cron/email-manana",
+      "schedule": "0 11 * * *"
     }
   ]
 }

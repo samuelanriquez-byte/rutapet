@@ -100,6 +100,10 @@ export default function ClientesPanel({ negocio }: any) {
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre, teléfono o localidad..."
           style={{ flex: 1, minWidth: 200, padding: '9px 14px', borderRadius: 9, border: '1px solid #E8E8E4', fontSize: 14, outline: 'none' }} />
+        <a href="/api/descargar/clientes"
+          style={{ fontSize: 14, padding: '9px 16px', borderRadius: 9, border: '1px solid #E8E8E4', background: '#fff', color: '#444', textDecoration: 'none', fontWeight: 600, whiteSpace: 'nowrap' }}>
+          ⬇️ Descargar
+        </a>
         <button onClick={abrirNuevo}
           style={{ background: '#EA6C00', color: '#fff', border: 'none', borderRadius: 9, padding: '9px 20px', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
           + Nuevo cliente

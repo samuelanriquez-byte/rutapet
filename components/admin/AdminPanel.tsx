@@ -233,6 +233,12 @@ export default function AdminPanel({ negocios }: { negocios: any[] }) {
               {/* Tab: Clientes */}
               {tab === 'clientes' && (
                 <div>
+                  {!cargandoDetalle && (
+                    <a href={`/api/admin/descargar-clientes?id=${negocioDetalle.id}&nombre=${encodeURIComponent(negocioDetalle.nombre)}`}
+                      style={{ display: 'inline-block', marginBottom: 16, fontSize: 13, padding: '8px 16px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', color: '#444', textDecoration: 'none', fontWeight: 600 }}>
+                      ⬇️ Descargar CSV
+                    </a>
+                  )}
                   {cargandoDetalle ? (
                     <p style={{ color: '#888', fontSize: 14 }}>Cargando...</p>
                   ) : detalleData?.clientes?.length === 0 ? (

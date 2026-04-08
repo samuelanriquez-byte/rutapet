@@ -76,7 +76,11 @@ export default function PedidosPanel({ negocio }: any) {
           </h2>
           <p style={{ color: '#888', fontSize: 13, marginTop: 2 }}>Pedidos confirmados por los clientes</p>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <a href="/api/descargar/pedidos-hoy"
+            style={{ fontSize: 13, padding: '7px 12px', borderRadius: 8, border: '1px solid #E8E8E4', background: '#fff', color: '#444', textDecoration: 'none', fontWeight: 600 }}>
+            ⬇️ Pedidos hoy
+          </a>
           {[1, 2, 3, 5].map(d => (
             <button key={d} onClick={() => setDiasVista(d)}
               style={{ fontSize: 13, padding: '7px 12px', borderRadius: 8, border: `1px solid ${diasVista === d ? '#EA6C00' : '#E8E8E4'}`, background: diasVista === d ? '#FFF7ED' : '#fff', color: diasVista === d ? '#EA6C00' : '#444', fontWeight: diasVista === d ? 700 : 400, cursor: 'pointer' }}>
