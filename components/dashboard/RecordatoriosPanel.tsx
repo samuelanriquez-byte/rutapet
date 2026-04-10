@@ -62,7 +62,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
           diasDesdeUltimo: dias,
           ciclo_dias: ciclo,
           mascotas: c.mascotas || [],
-          seleccionado: diasDesdeWhatsapp === null || diasDesdeWhatsapp >= 7,
+          seleccionado: true,
           diasDesdeWhatsapp,
         })
       }
@@ -84,7 +84,7 @@ export default function RecordatoriosPanel({ negocio }: any) {
   }
 
   function seleccionarTodos() {
-    setClientes(prev => prev.map(c => ({ ...c, seleccionado: c.diasDesdeWhatsapp === null || c.diasDesdeWhatsapp >= 7 })))
+    setClientes(prev => prev.map(c => ({ ...c, seleccionado: true })))
     setFiltroLocalidad('todas')
   }
 
@@ -174,12 +174,12 @@ export default function RecordatoriosPanel({ negocio }: any) {
         <div>
           {visibles.map(c => {
             const diasRestantes = c.ciclo_dias - c.diasDesdeUltimo
-            const bloqueado = c.diasDesdeWhatsapp !== null && c.diasDesdeWhatsapp < 7
-            const advertencia = c.diasDesdeWhatsapp !== null && c.diasDesdeWhatsapp >= 5 && c.diasDesdeWhatsapp < 7
+            const bloqueado = false
+            const advertencia = c.diasDesdeWhatsapp !== null && c.diasDesdeWhatsapp < 7
             return (
               <div key={c.id}
                 style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '14px 24px', borderBottom: '1px solid #F3F3F0', background: bloqueado ? '#F9F9F9' : c.seleccionado ? '#FFF7ED' : '#fff', cursor: bloqueado ? 'default' : 'pointer', opacity: bloqueado ? 0.6 : 1 }}
-                onClick={() => !bloqueado && toggleSeleccion(c.id)}>
+                onClick={() => toggleSeleccion(c.id)}>
                 {/* Checkbox */}
                 <div style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${bloqueado ? '#DDD' : c.seleccionado ? '#EA6C00' : '#CCC'}`, background: bloqueado ? '#EEE' : c.seleccionado ? '#EA6C00' : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   {c.seleccionado && !bloqueado && <span style={{ color: '#fff', fontSize: 12 }}>✓</span>}
