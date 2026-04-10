@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function enviarEmailForrajero({
   to,
   subject,
@@ -11,6 +9,11 @@ export async function enviarEmailForrajero({
   subject: string
   html: string
 }) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('RESEND_API_KEY no configurado, email omitido')
+    return false
+  }
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const { error } = await resend.emails.send({
     from: 'RutaPet <noreply@rutapets.com>',
     to,

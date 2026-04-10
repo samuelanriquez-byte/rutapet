@@ -62,11 +62,10 @@ export async function POST(req: NextRequest) {
         const primeraMascota = (cliente.mascotas || [])[0]
         await sendWhatsApp(cliente.telefono, mensaje, {
           nombre: cliente.nombre,
-          negocio: negocio?.nombre || '',
           mascota: primeraMascota?.nombre || '',
-          mascotas: mascotasTexto,
+          negocio: negocio?.nombre || '',
           fecha: fechaFormateada,
-          link,
+          token: pedido.token,
         })
         const hoyLocal = new Date().toISOString().split('T')[0]
         await supabase.from('clientes').update({ ultimo_whatsapp_fecha: hoyLocal }).eq('id', clienteId)

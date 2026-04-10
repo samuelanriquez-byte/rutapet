@@ -29,7 +29,7 @@ function formatPhone(phone: string): string {
 export async function sendWhatsApp(
   to: string,
   message: string,
-  templateVars?: { nombre: string; negocio: string; mascota: string; mascotas: string; fecha: string; link: string }
+  templateVars?: { nombre: string; mascota: string; negocio: string; fecha: string; token: string }
 ): Promise<void> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID
   const authToken = process.env.TWILIO_AUTH_TOKEN
@@ -55,11 +55,10 @@ export async function sendWhatsApp(
     params.ContentSid = templateSid
     params.ContentVariables = JSON.stringify({
       '1': templateVars.nombre,
-      '2': templateVars.negocio,
-      '3': templateVars.mascota,
-      '4': templateVars.mascotas,
-      '5': templateVars.fecha,
-      '6': templateVars.link,
+      '2': templateVars.mascota,
+      '3': templateVars.negocio,
+      '4': templateVars.fecha,
+      '5': templateVars.token,
     })
   }
 
