@@ -140,6 +140,7 @@ export default function AdminPanel({ negocios }: { negocios: any[] }) {
               <div>
                 <div style={{ fontWeight: 700, fontSize: 14, color: '#111' }}>{n.nombre}</div>
                 <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>{n.email}</div>
+                {n.whatsapp && <div style={{ fontSize: 12, color: '#25D366', marginTop: 1 }}>💬 {n.whatsapp}</div>}
               </div>
               <div>
                 <span style={{ fontSize: 12, fontWeight: 700, padding: '3px 10px', borderRadius: 99, background: n.plan === 'monthly' ? '#F0FDF4' : '#FFF7ED', color: n.plan === 'monthly' ? '#16A34A' : '#EA6C00' }}>
