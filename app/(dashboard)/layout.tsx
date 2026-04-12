@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const items = [
-  { href: '/dashboard', icon: '🏠', label: 'Dashboard' },
-  { href: '/clientes', icon: '👥', label: 'Clientes' },
-  { href: '/configuracion', icon: '⚙️', label: 'Config' },
+  { href: '/configuracion', icon: '⚙️', label: 'Mi negocio' },
+  { href: '/clientes', icon: '👥', label: 'Mis clientes' },
+  { href: '/dashboard', icon: '🏠', label: 'Agenda' },
 ]
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
