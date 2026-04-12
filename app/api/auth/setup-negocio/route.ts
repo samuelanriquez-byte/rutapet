@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/server'
 import { Resend } from 'resend'
 
 export async function POST(req: NextRequest) {
-  const { userId, nombre, email, slug } = await req.json()
+  const { userId, nombre, email, whatsapp, slug } = await req.json()
   if (!userId || !nombre || !slug) return NextResponse.json({ error: 'Datos incompletos' }, { status: 400 })
 
   const supabase = createAdminClient()
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   const { data: existing } = await supabase.from('negocios').select('id').eq('user_id', userId).single()
   if (existing) return NextResponse.json({ ok: true })
 
-  const { error } = await supabase.from('negocios').insert({ user_id: userId, nombre, slug, email })
+  const { error } = await supabase.from('negocios').insert({ user_id: userId, nombre, slug, email, whatsapp })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   // Notificar nuevo registro

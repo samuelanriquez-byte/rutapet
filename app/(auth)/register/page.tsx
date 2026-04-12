@@ -4,14 +4,14 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ nombre: '', email: '', password: '' })
+  const [form, setForm] = useState({ nombre: '', email: '', whatsapp: '', password: '' })
   const [showPass, setShowPass] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
 
   async function register() {
-    if (!form.nombre || !form.email || !form.password) { setError('Completá todos los campos.'); return }
+    if (!form.nombre || !form.email || !form.whatsapp || !form.password) { setError('Completá todos los campos.'); return }
     if (form.password.length < 6) { setError('La contraseña debe tener al menos 6 caracteres.'); return }
     setLoading(true)
     setError('')
@@ -35,7 +35,7 @@ export default function RegisterPage() {
       await fetch('/api/auth/setup-negocio', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: authData.user.id, nombre: form.nombre, email: form.email, slug }),
+        body: JSON.stringify({ userId: authData.user.id, nombre: form.nombre, email: form.email, whatsapp: form.whatsapp, slug }),
       })
     }
 
@@ -71,6 +71,8 @@ export default function RegisterPage() {
           <input value={form.nombre} onChange={e => setForm(p => ({ ...p, nombre: e.target.value }))} placeholder="Nombre de tu forrajería o negocio"
             style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
           <input value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} type="email" placeholder="Email"
+            style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
+          <input value={form.whatsapp} onChange={e => setForm(p => ({ ...p, whatsapp: e.target.value }))} type="tel" placeholder="WhatsApp (ej: 5491112345678)"
             style={{ background: '#F9F9F7', border: '1px solid #E8E8E4', borderRadius: 10, padding: '12px 16px', color: '#111', fontSize: 14, outline: 'none' }} />
           <div style={{ position: 'relative' }}>
             <input value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} type={showPass ? 'text' : 'password'} placeholder="Contraseña"
