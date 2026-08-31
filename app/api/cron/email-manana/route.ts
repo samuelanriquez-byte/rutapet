@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   }
 
   const admin = createAdminClient()
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rutapets.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://rutapet.com.ar'
 
   const hoy = new Date()
   const fechaStr = hoy.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
 
     const { data: pedidos } = await admin
       .from('pedidos')
-      .select('*, clientes(nombre, direccion), mascotas(nombre, kilos)')
+      .select('*, clientes(nombre, direccion, mascotas(*))')
       .eq('negocio_id', negocio.id)
       .eq('estado', 'confirmado')
       .gte('fecha_entrega', hoyISO)
@@ -37,14 +37,20 @@ export async function GET(req: NextRequest) {
 
     if (!pedidos || pedidos.length === 0) continue
 
-    const pedidosFormateados = pedidos.map((p: any) => ({
-      cliente_nombre: p.clientes?.nombre,
-      mascota_nombre: p.mascotas?.nombre,
-      kilos: p.mascotas?.kilos,
-      direccion: p.clientes?.direccion,
-      estado: p.estado,
-      metodo_pago: p.metodo_pago,
-    }))
+    const pedidosFormateados = pedidos.map((p: any) => {
+      const cliente = p.clientes || {}
+      const mascotas = cliente.mascotas || []
+      const nombresMascotas = mascotas.map((m: any) => m.nombre).join(', ')
+      const kilosTotal = mascotas.reduce((acc: number, m: any) => acc + ((p.kilos_override?.[m.id] ?? Number(m.kilos)) || 0), 0)
+      return {
+        cliente_nombre: cliente.nombre,
+        mascota_nombre: nombresMascotas,
+        kilos: kilosTotal,
+        direccion: cliente.direccion,
+        estado: p.estado,
+        metodo_pago: p.metodo_pago,
+      }
+    })
 
     const html = templatePedidosDia({
       negocioNombre: negocio.nombre,

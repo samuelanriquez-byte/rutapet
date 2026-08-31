@@ -4,6 +4,7 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Negocios (forrajerías)
+-- Negocios (forrajerías)
 CREATE TABLE IF NOT EXISTS negocios (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
@@ -16,6 +17,8 @@ CREATE TABLE IF NOT EXISTS negocios (
   logo_url TEXT,
   metodos_pago TEXT[] DEFAULT ARRAY['efectivo'],
   dias_anticipacion INTEGER DEFAULT 1,
+  mensaje_whatsapp TEXT,
+  promocion_whatsapp TEXT,
   plan TEXT DEFAULT 'trial',
   trial_ends_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '45 days'),
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -37,6 +40,7 @@ CREATE TABLE IF NOT EXISTS clientes (
   observacion_cliente TEXT,
   ciclo_dias INTEGER DEFAULT 30,
   ultimo_pedido_fecha DATE,
+  ultimo_whatsapp_fecha DATE,
   activo BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -61,6 +65,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
   fecha_entrega DATE NOT NULL,
   kilos_override JSONB, -- { mascota_id: kilos } si el cliente modificó
   metodo_pago TEXT,
+  estado_pago TEXT DEFAULT 'pendiente', -- pendiente, abonado
   notas TEXT,
   estado TEXT DEFAULT 'pendiente', -- pendiente, confirmado, entregado, cancelado
   whatsapp_enviado BOOLEAN DEFAULT false,
@@ -81,11 +86,17 @@ CREATE POLICY "negocios_own" ON negocios FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "clientes_own" ON clientes FOR ALL USING (negocio_id IN (SELECT id FROM negocios WHERE user_id = auth.uid()));
 CREATE POLICY "mascotas_own" ON mascotas FOR ALL USING (cliente_id IN (SELECT c.id FROM clientes c JOIN negocios n ON c.negocio_id = n.id WHERE n.user_id = auth.uid()));
 CREATE POLICY "pedidos_own" ON pedidos FOR ALL USING (negocio_id IN (SELECT id FROM negocios WHERE user_id = auth.uid()));
--- Las rutas públicas (pedido/[token]) usan el admin client en el servidor
--- No se necesitan políticas públicas permisivas
 
 -- Trigger updated_at
 CREATE OR REPLACE FUNCTION update_updated_at() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW(); RETURN NEW; END; $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_negocios_updated_at BEFORE UPDATE ON negocios FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER update_clientes_updated_at BEFORE UPDATE ON clientes FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 CREATE TRIGGER update_pedidos_updated_at BEFORE UPDATE ON pedidos FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+-- ─── MIGRACIÓN PARA BASE DE DATOS EXISTENTE ──────────────────────────────────
+-- Ejecutá estas líneas en el SQL Editor de Supabase si ya tenías la DB creada:
+ALTER TABLE negocios ADD COLUMN IF NOT EXISTS mensaje_whatsapp TEXT;
+ALTER TABLE negocios ADD COLUMN IF NOT EXISTS promocion_whatsapp TEXT;
+ALTER TABLE clientes ADD COLUMN IF NOT EXISTS ultimo_whatsapp_fecha DATE;
+ALTER TABLE pedidos ADD COLUMN IF NOT EXISTS estado_pago TEXT DEFAULT 'pendiente';
+

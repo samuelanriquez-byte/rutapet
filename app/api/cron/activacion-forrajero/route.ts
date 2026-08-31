@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/server'
-import twilio from 'twilio'
 
 export async function GET(req: NextRequest) {
   const secret = req.headers.get('authorization')?.replace('Bearer ', '')
@@ -38,7 +37,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: true, enviados: 0 })
   }
 
-  const client = twilio(accountSid, authToken)
   let enviados = 0
 
   for (const negocio of negocios) {
@@ -51,14 +49,27 @@ export async function GET(req: NextRequest) {
     if (count && count > 0) continue
 
     try {
-      const numero = negocio.whatsapp.startsWith('+') ? negocio.whatsapp : `+${negocio.whatsapp}`
-      await client.messages.create({
-        from: from.startsWith('whatsapp:') ? from : `whatsapp:${from}`,
-        to: `whatsapp:${numero}`,
-        contentSid: templateSid,
-        contentVariables: JSON.stringify({ '1': negocio.nombre }),
-      })
-      enviados++
+      const numero = negocio.whatsapp.startsWith('+') ? negocio.whatsapp : `+${negocio.whatsapp.replace(/\D/g, '')}`
+      const params: Record<string, string> = {
+        From: from.startsWith('whatsapp:') ? from : `whatsapp:${from}`,
+        To: `whatsapp:${numero}`,
+        ContentSid: templateSid,
+        ContentVariables: JSON.stringify({ '1': negocio.nombre }),
+      }
+
+      const res = await fetch(
+        `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Basic ' + Buffer.from(`${accountSid}:${authToken}`).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(params).toString(),
+        }
+      )
+
+      if (res.ok) enviados++
     } catch (err) {
       console.error(`Error enviando a ${negocio.nombre}:`, err)
     }

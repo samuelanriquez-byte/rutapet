@@ -14,7 +14,7 @@ export async function GET() {
 
   const { data: pedidos } = await admin
     .from('pedidos')
-    .select('*, clientes(nombre, telefono, direccion, localidad), mascotas(nombre, marca, kilos)')
+    .select('*, clientes(nombre, telefono, direccion, localidad, mascotas(*))')
     .eq('negocio_id', negocio.id)
     .eq('estado', 'confirmado')
     .gte('fecha_entrega', hoyISO)
@@ -24,14 +24,19 @@ export async function GET() {
   const filas = [['Cliente', 'Teléfono', 'Dirección', 'Localidad', 'Mascota', 'Marca', 'Kilos', 'Pago', 'Estado']]
 
   for (const p of pedidos || []) {
+    const cliente = (p as any).clientes || {}
+    const mascotas = cliente.mascotas || []
+    const nombresMascotas = mascotas.map((m: any) => m.nombre).join(' · ')
+    const marcasAlimento = mascotas.map((m: any) => m.marca_alimento).join(' · ')
+    const kilosTotal = mascotas.map((m: any) => `${m.nombre}: ${p.kilos_override?.[m.id] ?? m.kilos}kg`).join(' · ')
     filas.push([
-      p.clientes?.nombre || '',
-      p.clientes?.telefono || '',
-      p.clientes?.direccion || '',
-      p.clientes?.localidad || '',
-      p.mascotas?.nombre || '',
-      p.mascotas?.marca || '',
-      p.mascotas?.kilos || '',
+      cliente.nombre || '',
+      cliente.telefono || '',
+      cliente.direccion || '',
+      cliente.localidad || '',
+      nombresMascotas,
+      marcasAlimento,
+      kilosTotal,
       p.metodo_pago || '',
       p.estado || '',
     ])
