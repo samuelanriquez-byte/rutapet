@@ -8,3 +8,35 @@ body {
   color: #111;
   -webkit-font-smoothing: antialiased;
 }
+
+/* ── Destellos "45 días gratis" ─────────────────────────────── */
+@keyframes rp-shine {
+  0%   { transform: translateX(-140%) skewX(-20deg); }
+  55%  { transform: translateX(360%) skewX(-20deg); }
+  100% { transform: translateX(360%) skewX(-20deg); }
+}
+@keyframes rp-glow {
+  0%, 100% { box-shadow: 0 8px 24px rgba(234, 108, 0, 0.25); }
+  50%      { box-shadow: 0 0 22px rgba(234, 108, 0, 0.55), 0 8px 34px rgba(234, 108, 0, 0.45); }
+}
+@keyframes rp-twinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.8) rotate(0deg); }
+  50%      { opacity: 1;    transform: scale(1.18) rotate(16deg); }
+}
+@keyframes rp-pulse-bg {
+  0%, 100% { background-color: #FFF1E0; }
+  50%      { background-color: #FFE0BE; }
+}
+@keyframes rp-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+
+.rp-shine   { animation: rp-shine 2.6s ease-in-out infinite; }
+.rp-glow    { animation: rp-glow 2.2s ease-in-out infinite, rp-breathe 1.9s ease-in-out infinite; }
+.rp-twinkle { animation: rp-twinkle 1.4s ease-in-out infinite; display: inline-block; }
+.rp-pulse-bg { animation: rp-pulse-bg 2.2s ease-in-out infinite, rp-breathe 1.9s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rp-shine, .rp-glow, .rp-twinkle, .rp-pulse-bg { animation: none !important; }
+}

@@ -29,8 +29,16 @@ export default function LandingPage() {
         <p style={{ fontSize: 18, color: '#555', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 48px' }}>
           RutaPet avisa automáticamente por WhatsApp cuando a cada mascota le está por terminar el alimento. Tus clientes confirman el pedido y vos arrancás el día con la hoja de ruta lista.
         </p>
-        <Link href="/register" style={{ display: 'inline-block', background: '#EA6C00', color: '#fff', textDecoration: 'none', fontSize: 16, fontWeight: 700, padding: '16px 40px', borderRadius: 12 }}>
-          Probá 45 días gratis →
+        <Link
+          href="/register"
+          className="rp-glow"
+          style={{ position: 'relative', overflow: 'hidden', display: 'inline-flex', alignItems: 'center', gap: 8, background: '#EA6C00', color: '#fff', textDecoration: 'none', fontSize: 16, fontWeight: 700, padding: '16px 40px', borderRadius: 12 }}
+        >
+          <span aria-hidden className="rp-shine" style={{ position: 'absolute', top: 0, left: 0, width: 55, height: '100%', background: 'linear-gradient(120deg, transparent, rgba(255,255,255,0.75), transparent)', pointerEvents: 'none' }} />
+          <span className="rp-twinkle" style={{ position: 'relative' }}>✨</span>
+          <span style={{ position: 'relative' }}>Probá 45 días gratis</span>
+          <span className="rp-twinkle" style={{ position: 'relative', animationDelay: '0.7s' }}>✨</span>
+          <span style={{ position: 'relative' }}>→</span>
         </Link>
         <p style={{ color: '#AAA', fontSize: 13, marginTop: 16 }}>Sin tarjeta de crédito. Sin compromiso.</p>
 
@@ -105,11 +113,19 @@ export default function LandingPage() {
                 'WhatsApp automático incluido',
                 '200 mensajes a clientes por mes',
                 '45 días de prueba gratis',
-              ].map(f => (
-                <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, fontSize: 14, color: '#333' }}>
-                  <span style={{ color: '#EA6C00', fontWeight: 700 }}>✓</span> {f}
-                </li>
-              ))}
+              ].map(f => {
+                const destacado = f === '45 días de prueba gratis'
+                return (
+                  <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, fontSize: 14, color: '#333' }}>
+                    <span style={{ color: '#EA6C00', fontWeight: 700 }}>✓</span>
+                    {destacado ? (
+                      <span className="rp-pulse-bg" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontWeight: 800, color: '#B45309', padding: '4px 10px', borderRadius: 8 }}>
+                        <span className="rp-twinkle">✨</span> {f} <span className="rp-twinkle" style={{ animationDelay: '0.7s' }}>✨</span>
+                      </span>
+                    ) : f}
+                  </li>
+                )
+              })}
             </ul>
 
             <Link href="/register" style={{ display: 'block', background: '#EA6C00', color: '#fff', textDecoration: 'none', fontWeight: 700, padding: '14px 0', borderRadius: 10, fontSize: 15, textAlign: 'center' }}>
