@@ -41,22 +41,22 @@ export default function LandingPage() {
           <span style={{ position: 'relative' }}>→</span>
         </Link>
         <p style={{ color: '#AAA', fontSize: 13, marginTop: 16 }}>Sin tarjeta de crédito. Sin compromiso.</p>
+      </section>
 
-        {/* Screenshots del producto */}
-        <div style={{ marginTop: 64 }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: '#EA6C00', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 24 }}>Así lo ve tu cliente en su celular</p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>
-            {[
-              { src: '/screen-1.jpeg', label: '1. Recibe el WhatsApp' },
-              { src: '/screen-2.jpeg', label: '2. Confirma el pedido' },
-              { src: '/screen-3.jpeg', label: '3. Elige cómo pagar' },
-            ].map(({ src, label }) => (
-              <div key={src} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-                <img src={src} alt={label} style={{ width: 200, borderRadius: 20, boxShadow: '0 8px 32px rgba(0,0,0,0.12)', border: '1px solid #F0EDE8' }} />
-                <span style={{ fontSize: 13, color: '#888', fontWeight: 600 }}>{label}</span>
-              </div>
-            ))}
-          </div>
+      {/* Screenshots del producto */}
+      <section style={{ maxWidth: 1080, margin: '0 auto', padding: '64px 24px 100px', textAlign: 'center' }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: '#EA6C00', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 32 }}>Así lo ve tu cliente en su celular</p>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 32, flexWrap: 'wrap' }}>
+          {[
+            { src: '/screen-1.jpeg', label: '1. Recibe el WhatsApp' },
+            { src: '/screen-2.jpeg', label: '2. Confirma el pedido' },
+            { src: '/screen-3.jpeg', label: '3. Elige cómo pagar' },
+          ].map(({ src, label }) => (
+            <div key={src} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+              <img src={src} alt={label} style={{ width: 300, maxWidth: '82vw', borderRadius: 28, boxShadow: '0 16px 48px rgba(0,0,0,0.16)', border: '1px solid #F0EDE8' }} />
+              <span style={{ fontSize: 14, color: '#888', fontWeight: 600 }}>{label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
