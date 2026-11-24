@@ -5,15 +5,16 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 const title = 'RutaPet — Fidelizá a tus clientes automáticamente'
-const description = 'RutaPet avisa automáticamente por WhatsApp cuando a cada mascota le está por terminar el alimento. 45 días de prueba gratis, sin tarjeta.'
+const shareTitle = '¿Vendés alimentos para mascotas? ¡No pierdas más clientes!'
+const shareDescription = 'RutaPet avisa por WhatsApp antes de que a tu cliente se le termine el alimento. 45 días de prueba gratis, sin tarjeta.'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.rutapets.com'),
   title,
-  description,
+  description: shareDescription,
   openGraph: {
-    title,
-    description,
+    title: shareTitle,
+    description: shareDescription,
     url: 'https://www.rutapets.com',
     siteName: 'RutaPet',
     locale: 'es_AR',
@@ -21,8 +22,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title,
-    description,
+    title: shareTitle,
+    description: shareDescription,
   },
 }
 
